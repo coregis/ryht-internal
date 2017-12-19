@@ -45,6 +45,11 @@
 		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
 		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
 	</ul>
+
+	<h3>Click on an item to zoom to it</h3>
+	<ul>
+		<li onClick="map.fitBounds((map.getSource('raising-texas-teachers').bounds));">Raising Texas Teachers points</li>
+	</ul>
 </div>
 
 <div class='legend'>
@@ -209,7 +214,7 @@ map.on('load', function () {
             'line-color': 'rgba(99,108,153,0.5)',
             'line-width': 2
         },
-        
+
     });
 
 
@@ -231,7 +236,7 @@ map.on('load', function () {
             'line-color': 'rgba(117,137,77,0.5)',
             'line-width': 2
         },
-        
+
     });
 
 });
