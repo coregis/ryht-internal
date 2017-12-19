@@ -63,16 +63,16 @@ map.on('load', function () {
     });
     map.addLayer({
         'id': 'raising-blended-learners-points',
-        'type': 'circle',
+        'type': 'symbol',
         'source': 'raising-blended-learners',
         'layout': {
             'visibility': 'visible'
         },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(55,148,179,1)'
-        },
-        'source-layer': 'raising_blended_learners_v1-c9zny7'
+        layout: {
+		  'icon-image': 'raising_blended_learners_v2',
+		  'icon-allow-overlap': true,
+		  },
+		'source-layer': 'raising_blended_learners_v1-c9zny7'
     });
 	
 	
@@ -82,15 +82,12 @@ map.on('load', function () {
     });
     map.addLayer({
         'id': 'raising-family-partnerships-points',
-        'type': 'circle',
+        'type': 'symbol',
         'source': 'raising-family-partnerships',
-        'layout': {
-            'visibility': 'visible'
-        },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(200,148,179,1)'
-        },
+        layout: {
+		  'icon-image': 'raising_family_partnerships_v2',
+		  'icon-allow-overlap': true,
+		  },
         'source-layer': 'raising_family_partnerships_v-66401r'
     });
 	
@@ -100,15 +97,15 @@ map.on('load', function () {
     });
     map.addLayer({
         'id': 'raising-texas-teachers-points',
-        'type': 'circle',
+        'type': 'symbol',
         'source': 'raising-texas-teachers',
         'layout': {
             'visibility': 'visible'
         },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(55,7,179,1)'
-        },
+        layout: {
+		  'icon-image': 'raising_texas_teachers_v2',
+		  'icon-allow-overlap': true,
+		  },
         'source-layer': 'raising_texas_teachers_v1-98thqt'
     });
 
@@ -119,15 +116,15 @@ map.on('load', function () {
     });
     map.addLayer({
         'id': 'raising-school-leaders-points',
-        'type': 'circle',
+        'type': 'symbol',
         'source': 'raising-school-leaders',
         'layout': {
             'visibility': 'visible'
         },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(55,148,7,1)'
-        },
+        layout: {
+		  'icon-image': 'raising_school_leaders_v2',
+		  'icon-allow-overlap': true,
+		  },
         'source-layer': 'raising_school_leaders_v1-7g2pj6'
     });
 	
@@ -137,15 +134,12 @@ map.on('load', function () {
     });
     map.addLayer({
         'id': 'districts-of-innovation-points',
-        'type': 'circle',
+        'type': 'symbol',
         'source': 'districts-of-innovation',
-        'layout': {
-            'visibility': 'visible'
-        },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(55,30,179,1)'
-        },
+        layout: {
+		  'icon-image': 'districts_of_innovation_v2',
+		  'icon-allow-overlap': true,
+		  },
         'source-layer': 'districts_of_innovation_v1-4i92yo'
     });
 
@@ -169,9 +163,6 @@ map.on('load', function () {
             'line-width': 1
         },  
     });
-
-});	
-/*
 	
 	map.addSource('state-senate-districts', {
         type: 'vector',
@@ -181,18 +172,20 @@ map.on('load', function () {
         'id': 'state-senate-districts-lines',
         'type': 'line',
         'source': 'state-senate-districts',
+		'source-layer': 'state_senate_districts-0g2odu',
         'layout': {
-            'visibility': 'visible'
-			'line-join': 'round'
+            'visibility': 'visible',
+			'line-join': 'round',
 			'line-cap': 'round'
         },
         'paint': {
-            'line-color': #636c99,
+            'line-color': 'rgba(99,108,153,0.5)',
             'line-width': 2
         },
-        'source-layer': 'state_senate_districts-0g2odu'
+        
     });
-	
+
+
 	map.addSource('state-house-districts', {
         type: 'vector',
         url: 'mapbox://core-gis.9drnaiu0'
@@ -201,20 +194,21 @@ map.on('load', function () {
         'id': 'state-house-districts-lines',
         'type': 'line',
         'source': 'state-house-districts',
+		'source-layer': 'state_house_districts-1vl4x8',
         'layout': {
-            'visibility': 'visible'
-			'line-join': 'round'
+            'visibility': 'visible',
+			'line-join': 'round',
 			'line-cap': 'round'
         },
         'paint': {
-            'line-color': #768a4d,
+            'line-color': 'rgba(117,137,77,0.5)',
             'line-width': 2
         },
-        'source-layer': 'state_house_districts-1vl4x8'
+        
     });
 
 });
-*/
+
 
 // When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.
