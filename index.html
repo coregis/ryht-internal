@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.css' rel='stylesheet' />
+	<link href="css/ryht-internal-style.css" rel="stylesheet">
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+		.mapboxgl-popup {
+		max-width: 400px;
+		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<div class='legend'>
+	<div class='legend-title'>Raise Your Hand Texas Programs</div>
+		<div class='legend-scale'>
+			  <ul class='legend-labels'>
+				<li><span style='background:#a80000;'></span>Select 150 Buildings</li>
+				<li><span style='background:#ff7f7f;'></span>Select 150 Parcels</li>
+				<li><span style='background:#5e6ea6;'></span>Vintage 500 Buildings</li>
+				<li><span style='background:#bee8ff;'></span>Vintage 500 Parcels</li>
+				<li><span style='background:#c9e6b5;'></span>Other Surveyed Buildings</li>
+				<li><span style='background:#ddfec6;'></span>Other Surveyed Parcels</li>
+				<li><span style='outline:#594;'></span>Survey Sectors</li>
+			  </ul>
+		</div>	  
+		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
+		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
+	</div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWIHzbnOTebcQ';
+
+//set bounds to Texas
+var bounds = [
+		[-114.9594,21.637], // southwest coords
+		[-85.50,39.317] // northeast coords
+	];	
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/core-gis/cjbcz8eyg70il2snv8ccgahf7', // stylesheet location
+    center: [-98.887939,31.821565], // starting position [lng, lat]
+    zoom: 5.5, // starting zoom
+	maxBounds:  bounds // sets bounds as max
+	
+});
+
+map.on('load', function () {
+    map.addSource('museums', {
+        type: 'vector',
+        url: 'mapbox://mapbox.2opop9hr'
+    });
+    map.addLayer({
+        'id': 'museums',
+        'type': 'circle',
+        'source': 'museums',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'circle-radius': 8,
+            'circle-color': 'rgba(55,148,179,1)'
+        },
+        'source-layer': 'museum-cusco'
+    });
+
+    map.addSource('contours', {
+        type: 'vector',
+        url: 'mapbox://mapbox.mapbox-terrain-v2'
+    });
+    map.addLayer({
+        'id': 'contours',
+        'type': 'line',
+        'source': 'contours',
+        'source-layer': 'contour',
+        'layout': {
+            'visibility': 'visible',
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#877b59',
+            'line-width': 1
+        }
+    });
+});
+
+// When a click event occurs on a feature in the states layer, open a popup at the
+    // location of the click, with description HTML from its properties.
+    map.on('click', 'raising_blended_learners_points', function (e) {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(fillpopup(e.features[0].properties))
+            .addTo(map);
+		console.log(e.features[0].properties);
+    });
+	
+	 // Change the cursor to a pointer when the mouse is over the points layer.
+    map.on('mouseenter', 'raising_blended_learners_points', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'raising_blended_learners_points', function () {
+        map.getCanvas().style.cursor = '';
+    });
+	
+	function fillpopup(data){
+		var html = "";
+		html = html + "<img src='http://res.cloudinary.com/core-gis/image/upload/" + data.Photo_1 + ".jpg' class='popupimage' alt='Photo of this property'>"
+		html = html + "<br>"
+		html = html + "<span class='varname'>Category: </span> <span class='attribute'>" + data.Webmap_Cat + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Address: </span> <span class='attribute'>" + data.address_su + " " + data.address_th +"</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Year Built: </span> <span class='attribute'>" + data.Year_Built + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Building Type: </span> <span class='attribute'>" + data.building_t + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Number of Stories: </span> <span class='attribute'>" + data.Stories + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Cladding: </span> <span class='attribute'>" + data.cladding + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Roof Type: </span> <span class='attribute'>" + data.roof_type + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Roof Material: </span> <span class='attribute'>" + data.roof_mater + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Evaluation Category: </span> <span class='attribute'>" + data.evaluation + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Part of a Distrct? </span> <span class='attribute'>" + data.part_of_a_ + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Significant Trees? </span> <span class='attribute'>" + data.significan + "</span>";
+		return html;
+		//this will return the string to the calling function
+		
+	}
+
+</script>
+
+</body>
+</html>
