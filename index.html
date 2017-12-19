@@ -235,36 +235,7 @@ map.on('load', function () {
     map.on('mouseleave', 'raising_blended_learners_points', function () {
         map.getCanvas().style.cursor = '';
     });
-	
-	function fillpopup(data){
-		var html = "";
-		html = html + "<img src='http://res.cloudinary.com/core-gis/image/upload/" + data.Photo_1 + ".jpg' class='popupimage' alt='Photo of this property'>"
-		html = html + "<br>"
-		html = html + "<span class='varname'>Category: </span> <span class='attribute'>" + data.Webmap_Cat + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Address: </span> <span class='attribute'>" + data.address_su + " " + data.address_th +"</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Year Built: </span> <span class='attribute'>" + data.Year_Built + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Building Type: </span> <span class='attribute'>" + data.building_t + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Number of Stories: </span> <span class='attribute'>" + data.Stories + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Cladding: </span> <span class='attribute'>" + data.cladding + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Roof Type: </span> <span class='attribute'>" + data.roof_type + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Roof Material: </span> <span class='attribute'>" + data.roof_mater + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Evaluation Category: </span> <span class='attribute'>" + data.evaluation + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Part of a Distrct? </span> <span class='attribute'>" + data.part_of_a_ + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Significant Trees? </span> <span class='attribute'>" + data.significan + "</span>";
-		return html;
-		//this will return the string to the calling function
-		
-	}
+
 
 </script>
 
