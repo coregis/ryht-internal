@@ -9,16 +9,43 @@
 	<link href="css/ryht-internal-style.css" rel="stylesheet">
     <style>
         body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #map { position:absolute; top:0; bottom:0; width:80%; }
+        #controls { float: right; clear: left; width: 20%; }
 		.mapboxgl-popup {
 		max-width: 400px;
 		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 </style>
+	<script>
+		function showHideLayer(layerName) {
+			var visibility = map.getLayoutProperty(layerName, 'visibility');
+			console.log(layerName, visibility);
+        if (visibility === 'visible') {
+            map.setLayoutProperty(layerName, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(layerName, 'visibility', 'visible');
+        }
+		}
+	</script>
 </head>
 <body>
 
 <div id='map'></div>
+
+<div id='controls'>
+	<h3>Click on a layer name below to toggle its visibility</h3>
+	<ul>
+		<li onClick="showHideLayer('raising-blended-learners-points');">Raising Blended Learners</li>
+		<li onClick="showHideLayer('raising-family-partnerships-points');">Raising Family Partnerships</li>
+		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
+		<li onClick="showHideLayer('raising-school-leaders-points');">Raising School Leaders</li>
+		<li onClick="showHideLayer('districts-of-innovation-points');">Districts of Innovation</li>
+		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
+		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
+	</ul>
+</div>
 
 <div class='legend'>
 	<div class='legend-title'>Raise Your Hand Texas Programs</div>
@@ -32,7 +59,7 @@
 				<li><span style='background:#ddfec6;'></span>Other Surveyed Parcels</li>
 				<li><span style='outline:#594;'></span>Survey Sectors</li>
 			  </ul>
-		</div>	  
+		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
 		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
 	</div>
@@ -45,7 +72,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWI
 var bounds = [
 		[-114.9594,21.637], // southwest coords
 		[-85.50,39.317] // northeast coords
-	];	
+	];
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
@@ -53,7 +80,7 @@ var map = new mapboxgl.Map({
     center: [-98.887939,31.821565], // starting position [lng, lat]
     zoom: 5.5, // starting zoom
 	maxBounds:  bounds // sets bounds as max
-	
+
 });
 
 map.on('load', function () {
@@ -74,8 +101,8 @@ map.on('load', function () {
 		  },
 		'source-layer': 'raising_blended_learners_v1-c9zny7'
     });
-	
-	
+
+
 	map.addSource('raising-family-partnerships', {
         type: 'vector',
         url: 'mapbox://core-gis.20b66ic6'
@@ -90,7 +117,7 @@ map.on('load', function () {
 		  },
         'source-layer': 'raising_family_partnerships_v-66401r'
     });
-	
+
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
         url: 'mapbox://core-gis.bev3k3sc'
@@ -109,7 +136,7 @@ map.on('load', function () {
         'source-layer': 'raising_texas_teachers_v1-98thqt'
     });
 
-	
+
 	map.addSource('raising-school-leaders', {
         type: 'vector',
         url: 'mapbox://core-gis.69ngzsbu'
@@ -127,7 +154,7 @@ map.on('load', function () {
 		  },
         'source-layer': 'raising_school_leaders_v1-7g2pj6'
     });
-	
+
 	map.addSource('districts-of-innovation', {
         type: 'vector',
         url: 'mapbox://core-gis.b1ufwbfk'
@@ -143,7 +170,7 @@ map.on('load', function () {
         'source-layer': 'districts_of_innovation_v1-4i92yo'
     });
 
-	
+
 	map.addSource('texas-school-districts', {
         type: 'vector',
         url: 'mapbox://core-gis.3eruitf4'
@@ -161,9 +188,9 @@ map.on('load', function () {
         'paint': {
             'line-color': '#c29ed7',
             'line-width': 1
-        },  
+        },
     });
-	
+
 	map.addSource('state-senate-districts', {
         type: 'vector',
         url: 'mapbox://core-gis.b2eu90mx'
@@ -219,7 +246,7 @@ map.on('load', function () {
             .addTo(map);
 		console.log(e.features[0].properties);
     });
-	
+
 	 // Change the cursor to a pointer when the mouse is over the points layer.
     map.on('mouseenter', 'raising_blended_learners_points', function () {
         map.getCanvas().style.cursor = 'pointer';
