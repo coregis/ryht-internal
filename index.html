@@ -49,7 +49,7 @@ var bounds = [
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/core-gis/cjbcz8eyg70il2snv8ccgahf7', // stylesheet location
+    style: 'mapbox://styles/core-gis/cjbcz8eyg70il2snv8ccgahf7', // stylesheet location; this is the style with markers turned OFF
     center: [-98.887939,31.821565], // starting position [lng, lat]
     zoom: 5.5, // starting zoom
 	maxBounds:  bounds // sets bounds as max
@@ -57,14 +57,14 @@ var map = new mapboxgl.Map({
 });
 
 map.on('load', function () {
-    map.addSource('museums', {
+        map.addSource('raising-blended-learners', {
         type: 'vector',
-        url: 'mapbox://mapbox.2opop9hr'
+        url: 'mapbox://core-gis.cyvv2xc0'
     });
     map.addLayer({
-        'id': 'museums',
+        'id': 'raising-blended-learners-points',
         'type': 'circle',
-        'source': 'museums',
+        'source': 'raising-blended-learners',
         'layout': {
             'visibility': 'visible'
         },
@@ -72,29 +72,149 @@ map.on('load', function () {
             'circle-radius': 8,
             'circle-color': 'rgba(55,148,179,1)'
         },
-        'source-layer': 'museum-cusco'
+        'source-layer': 'raising_blended_learners_v1-c9zny7'
     });
-
-    map.addSource('contours', {
+	
+	
+	map.addSource('raising-family-partnerships', {
         type: 'vector',
-        url: 'mapbox://mapbox.mapbox-terrain-v2'
+        url: 'mapbox://core-gis.20b66ic6'
     });
     map.addLayer({
-        'id': 'contours',
-        'type': 'line',
-        'source': 'contours',
-        'source-layer': 'contour',
+        'id': 'raising-family-partnerships-points',
+        'type': 'circle',
+        'source': 'raising-family-partnerships',
         'layout': {
-            'visibility': 'visible',
-            'line-join': 'round',
-            'line-cap': 'round'
+            'visibility': 'visible'
         },
         'paint': {
-            'line-color': '#877b59',
-            'line-width': 1
-        }
+            'circle-radius': 8,
+            'circle-color': 'rgba(200,148,179,1)'
+        },
+        'source-layer': 'raising_family_partnerships_v-66401r'
     });
+	
+	map.addSource('raising-texas-teachers', {
+        type: 'vector',
+        url: 'mapbox://core-gis.bev3k3sc'
+    });
+    map.addLayer({
+        'id': 'raising-texas-teachers-points',
+        'type': 'circle',
+        'source': 'raising-texas-teachers',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'circle-radius': 8,
+            'circle-color': 'rgba(55,7,179,1)'
+        },
+        'source-layer': 'raising_texas_teachers_v1-98thqt'
+    });
+
+	
+	map.addSource('raising-school-leaders', {
+        type: 'vector',
+        url: 'mapbox://core-gis.69ngzsbu'
+    });
+    map.addLayer({
+        'id': 'raising-school-leaders-points',
+        'type': 'circle',
+        'source': 'raising-school-leaders',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'circle-radius': 8,
+            'circle-color': 'rgba(55,148,7,1)'
+        },
+        'source-layer': 'raising_school_leaders_v1-7g2pj6'
+    });
+	
+	map.addSource('districts-of-innovation', {
+        type: 'vector',
+        url: 'mapbox://core-gis.b1ufwbfk'
+    });
+    map.addLayer({
+        'id': 'districts-of-innovation-points',
+        'type': 'circle',
+        'source': 'districts-of-innovation',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'circle-radius': 8,
+            'circle-color': 'rgba(55,30,179,1)'
+        },
+        'source-layer': 'districts_of_innovation_v1-4i92yo'
+    });
+
+	
+	map.addSource('texas-school-districts', {
+        type: 'vector',
+        url: 'mapbox://core-gis.3eruitf4'
+    });
+    map.addLayer({
+        'id': 'texas-school-districts-lines',
+        'type': 'line',
+        'source': 'texas-school-districts',
+		'source-layer': 'texas_school_districts_v2-d54t25',
+        'layout': {
+            'visibility': 'visible',
+			'line-join': 'round',
+			'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': '#c29ed7',
+            'line-width': 1
+        },  
+    });
+
+});	
+/*
+	
+	map.addSource('state-senate-districts', {
+        type: 'vector',
+        url: 'mapbox://core-gis.b2eu90mx'
+    });
+    map.addLayer({
+        'id': 'state-senate-districts-lines',
+        'type': 'line',
+        'source': 'state-senate-districts',
+        'layout': {
+            'visibility': 'visible'
+			'line-join': 'round'
+			'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': #636c99,
+            'line-width': 2
+        },
+        'source-layer': 'state_senate_districts-0g2odu'
+    });
+	
+	map.addSource('state-house-districts', {
+        type: 'vector',
+        url: 'mapbox://core-gis.9drnaiu0'
+    });
+    map.addLayer({
+        'id': 'state-house-districts-lines',
+        'type': 'line',
+        'source': 'state-house-districts',
+        'layout': {
+            'visibility': 'visible'
+			'line-join': 'round'
+			'line-cap': 'round'
+        },
+        'paint': {
+            'line-color': #768a4d,
+            'line-width': 2
+        },
+        'source-layer': 'state_house_districts-1vl4x8'
+    });
+
 });
+*/
 
 // When a click event occurs on a feature in the states layer, open a popup at the
     // location of the click, with description HTML from its properties.
