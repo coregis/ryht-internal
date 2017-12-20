@@ -46,8 +46,8 @@
 					console.log(i, features[i], coords.length + " coordinate sets found");
 					for (j in coords) {
 						console.log("len", coords.length, coords[j].length);
-						console.log(coords[j]);
-						if (!(coords[j] instanceof Array)) {
+						console.log(coords, coords[j], (coords[j][0] instanceof Array));
+						if (!(coords[j][0] instanceof Array)) {
 //							console.log(j, coords[j])
 							if (coords[j][0] < minX) { minX = coords[j][0]; }
 							if (coords[j][0] > maxX) { maxX = coords[j][0]; }
@@ -58,7 +58,8 @@
 							for (k in coords[j]) {
 //								console.log(j, k, coords[j], coords[j][k])
 //								console.log("FOO");
-								if (!(coords[j][k] instanceof Array)) {
+								console.log(coords, coords[j], coords[j][k], (coords[j][k][0] instanceof Array));
+								if (!(coords[j][k][0] instanceof Array)) {
 									if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
 									if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
 									if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
@@ -66,6 +67,7 @@
 								}
 								else {
 									for (l in coords[j][k]) {
+										console.log(coords, coords[j], coords[j][k], coords[j][k][l], (coords[j][k][l][0] instanceof Array));
 										if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
 										if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
 										if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
