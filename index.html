@@ -9,8 +9,7 @@
 	<link href="css/ryht-internal-style.css" rel="stylesheet">
     <style>
         body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:80%; }
-        #controls { float: right; clear: left; width: 20%; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
 		.mapboxgl-popup {
 		max-width: 400px;
 		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
@@ -34,30 +33,18 @@
 
 <div id='map'></div>
 
-<div id='controls'>
-	<h3>Click on a layer name below to toggle its visibility</h3>
-	<ul>
-		<li onClick="showHideLayer('raising-blended-learners-points');">Raising Blended Learners</li>
-		<li onClick="showHideLayer('raising-family-partnerships-points');">Raising Family Partnerships</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-		<li onClick="showHideLayer('raising-school-leaders-points');">Raising School Leaders</li>
-		<li onClick="showHideLayer('districts-of-innovation-points');">Districts of Innovation</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-	</ul>
-</div>
-
 <div class='legend'>
-	<div class='legend-title'>Raise Your Hand Texas Programs</div>
+	<div class='legend-title'>Click on a layer name below to toggle its visibility</div>
 		<div class='legend-scale'>
 			  <ul class='legend-labels'>
-				<li><span style='background:#a80000;'></span>Select 150 Buildings</li>
-				<li><span style='background:#ff7f7f;'></span>Select 150 Parcels</li>
-				<li><span style='background:#5e6ea6;'></span>Vintage 500 Buildings</li>
-				<li><span style='background:#bee8ff;'></span>Vintage 500 Parcels</li>
-				<li><span style='background:#c9e6b5;'></span>Other Surveyed Buildings</li>
-				<li><span style='background:#ddfec6;'></span>Other Surveyed Parcels</li>
-				<li><span style='outline:#594;'></span>Survey Sectors</li>
+				<li onClick="showHideLayer('raising-blended-learners-points');">Raising Blended Learners</li>
+				<li onClick="showHideLayer('raising-family-partnerships-points');">Raising Family Partnerships</li>
+				<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
+				<li onClick="showHideLayer('raising-school-leaders-points');">Raising School Leaders</li>
+				<li onClick="showHideLayer('districts-of-innovation-points');">Districts of Innovation</li>
+				<li onClick="showHideLayer('texas-school-districts-lines');">Texas School Districts</li>
+				<li onClick="showHideLayer('state-house-districts-lines');">State House Districts</li>
+				<li onClick="showHideLayer('state-senate-districts-lines');">State Senate Districts</li>
 			  </ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
@@ -82,7 +69,17 @@ var map = new mapboxgl.Map({
 	maxBounds:  bounds // sets bounds as max
 
 });
-
+/*
+var layers = map.getStyle().layers;
+    // Find the index of the first symbol layer in the map style
+    var firstSymbolId;
+    for (var i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+            firstSymbolId = layers[i].id;
+            break;
+        }
+    }
+*/
 map.on('load', function () {
         map.addSource('raising-blended-learners', {
         type: 'vector',
@@ -100,7 +97,7 @@ map.on('load', function () {
 		  'icon-allow-overlap': true,
 		  },
 		'source-layer': 'raising_blended_learners_v1-c9zny7'
-    });
+    }, 'place_label');
 
 
 	map.addSource('raising-family-partnerships', {
@@ -116,7 +113,7 @@ map.on('load', function () {
 		  'icon-allow-overlap': true,
 		  },
         'source-layer': 'raising_family_partnerships_v-66401r'
-    });
+    }, 'raising-blended-learners-points');
 
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
@@ -134,7 +131,7 @@ map.on('load', function () {
 		  'icon-allow-overlap': true,
 		  },
         'source-layer': 'raising_texas_teachers_v1-98thqt'
-    });
+    }, 'raising-family-partnerships-points');
 
 
 	map.addSource('raising-school-leaders', {
@@ -153,7 +150,7 @@ map.on('load', function () {
 		  'icon-allow-overlap': true,
 		  },
         'source-layer': 'raising_school_leaders_v1-7g2pj6'
-    });
+    }, 'raising-texas-teachers-points');
 
 	map.addSource('districts-of-innovation', {
         type: 'vector',
@@ -168,7 +165,7 @@ map.on('load', function () {
 		  'icon-allow-overlap': true,
 		  },
         'source-layer': 'districts_of_innovation_v1-4i92yo'
-    });
+    },'raising-school-leaders-points');
 
 
 	map.addSource('texas-school-districts', {
@@ -189,7 +186,7 @@ map.on('load', function () {
             'line-color': '#c29ed7',
             'line-width': 1
         },
-    });
+    }, 'districts-of-innovation-points');
 
 	map.addSource('state-senate-districts', {
         type: 'vector',
@@ -210,7 +207,7 @@ map.on('load', function () {
             'line-width': 2
         },
         
-    });
+    }, 'districts-of-innovation-points');
 
 
 	map.addSource('state-house-districts', {
@@ -232,7 +229,7 @@ map.on('load', function () {
             'line-width': 2
         },
         
-    });
+    }, 'districts-of-innovation-points');
 
 });
 
