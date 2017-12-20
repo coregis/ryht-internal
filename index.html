@@ -28,6 +28,64 @@
             map.setLayoutProperty(layerName, 'visibility', 'visible');
         }
 		}
+
+		function zoomToPolygon(sourceID, itemID) {
+//			map.fitBounds(map.getSource(sourceID).bounds, {linear: false});
+			layerBounds = map.getSource(sourceID).bounds;
+			layerID = map.getSource(sourceID).vectorLayerIds[0];
+			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+			console.log(features);
+			minX = layerBounds[2];
+			maxX = layerBounds[0];
+			minY = layerBounds[3];
+			maxY = layerBounds[1];
+			console.log("whole layer bounds:", [minX, minY, maxX, maxY]);
+			for (i in features) {
+				if (features[i].id == itemID) {
+					coords = features[i].toJSON().geometry.coordinates;
+					console.log(i, features[i], coords.length + " coordinate sets found");
+					for (j in coords) {
+						console.log("len", coords.length, coords[j].length);
+						console.log(coords[j]);
+						if (!(coords[j] instanceof Array)) {
+//							console.log(j, coords[j])
+							if (coords[j][0] < minX) { minX = coords[j][0]; }
+							if (coords[j][0] > maxX) { maxX = coords[j][0]; }
+							if (coords[j][1] < minY) { minY = coords[j][1]; }
+							if (coords[j][1] > maxY) { maxY = coords[j][1]; }
+						}
+						else {
+							for (k in coords[j]) {
+//								console.log(j, k, coords[j], coords[j][k])
+//								console.log("FOO");
+								if (!(coords[j][k] instanceof Array)) {
+									if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
+									if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
+									if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
+									if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
+								}
+								else {
+									for (l in coords[j][k]) {
+										if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
+										if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
+										if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
+										if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			console.log("individual item bounds:", [minX, minY, maxX, maxY]);
+			map.fitBounds(
+				[[minX, minY], [maxX, maxY]],
+				{
+					padding: 10
+				}
+			);
+//			console.log(map.queryRenderedFeatures({layers:['state-senate-districts-lines']}));
+		}
 	</script>
 </head>
 <body>
@@ -48,7 +106,11 @@
 
 	<h3>Click on an item to zoom to it</h3>
 	<ul>
-		<li onClick="map.fitBounds((map.getSource('raising-texas-teachers').bounds));">Raising Texas Teachers points</li>
+		<li onClick="map.fitBounds(map.getSource('raising-texas-teachers').bounds);">Raising Texas Teachers points</li>
+		<li onClick="map.fitBounds(map.getSource('state-senate-districts').bounds);">State Senate Districts (all)</li>
+		<li onClick="zoomToPolygon('state-senate-districts', 1);">State Senate District 1</li>
+		<li onClick="zoomToPolygon('state-senate-districts', 23);">State Senate District 23</li>
+		<li onClick="zoomToPolygon('state-senate-districts', 29);">State Senate District 29</li>
 	</ul>
 </div>
 
