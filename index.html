@@ -37,14 +37,14 @@
 	<div class='legend-title'>Click on a layer name below to toggle its visibility</div>
 		<div class='legend-scale'>
 			  <ul class='legend-labels'>
-				<li onClick="showHideLayer('raising-blended-learners-points');">Raising Blended Learners</li>
-				<li onClick="showHideLayer('raising-family-partnerships-points');">Raising Family Partnerships</li>
-				<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-				<li onClick="showHideLayer('raising-school-leaders-points');">Raising School Leaders</li>
-				<li onClick="showHideLayer('districts-of-innovation-points');">Districts of Innovation</li>
-				<li onClick="showHideLayer('texas-school-districts-lines');">Texas School Districts</li>
-				<li onClick="showHideLayer('state-house-districts-lines');">State House Districts</li>
-				<li onClick="showHideLayer('state-senate-districts-lines');">State Senate Districts</li>
+				<li onClick="showHideLayer('raising-blended-learners-points');"><span id="raising_blended_learners"></span>Raising Blended Learners</li>
+				<li onClick="showHideLayer('raising-family-partnerships-points');"><span id="raising_family_partnerships"></span>Raising Family Partnerships</li>
+				<li onClick="showHideLayer('raising-texas-teachers-points');"><span id="raising_texas_teachers"></span>Raising Texas Teachers</li>
+				<li onClick="showHideLayer('raising-school-leaders-points');"><span id="raising_school_leaders"></span>Raising School Leaders</li>
+				<li onClick="showHideLayer('districts-of-innovation-points');"><span id="districts_of_innovation"></span>Districts of Innovation</li>
+				<li onClick="showHideLayer('texas-school-districts-lines');"><span id="texas_school_districts"></span>Texas School Districts</li>
+				<li onClick="showHideLayer('state-house-districts-lines');"><span id="state_house_districts"></span>State House Districts</li>
+				<li onClick="showHideLayer('state-senate-districts-lines');"><span id="state_senate_districts"></span>State Senate Districts</li>
 			  </ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
@@ -231,12 +231,26 @@ map.on('load', function () {
         
     }, 'districts-of-innovation-points');
 
+
+    map.addLayer({
+        'id': 'state-house-districts-poly',
+        'type': 'fill',
+        'source': 'state-house-districts',
+		'source-layer': 'state_house_districts-1vl4x8',
+        'layout': {        },
+        'paint': {
+            'fill-color': 'rgba(200, 100, 240, 0)',
+            'fill-outline-color': 'rgba(200, 100, 240, 0)'
+			},
+        
+    });
+
 });
 
 
-// When a click event occurs on a feature in the states layer, open a popup at the
+// When a click event occurs on a feature in the house districts layer, open a popup at the
     // location of the click, with description HTML from its properties.
-    map.on('click', 'raising_blended_learners_points', function (e) {
+    map.on('click', 'state-house-districts-poly', function (e) {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(fillpopup(e.features[0].properties))
@@ -244,16 +258,29 @@ map.on('load', function () {
 		console.log(e.features[0].properties);
     });
 
-	 // Change the cursor to a pointer when the mouse is over the points layer.
-    map.on('mouseenter', 'raising_blended_learners_points', function () {
+	 // Change the cursor to a pointer when the mouse is over the house districts layer.
+    map.on('mouseenter', 'state-house-districts-poly', function () {
         map.getCanvas().style.cursor = 'pointer';
     });
 
     // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'raising_blended_learners_points', function () {
+    map.on('mouseleave', 'state-house-districts-poly', function () {
         map.getCanvas().style.cursor = '';
     });
 
+	function fillpopup(data){
+		var html = "";
+		html = html + "<span class='varname'>District: </span> <span class='attribute'>" + data.District + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Representative: </span> <span class='attribute'>" + data.Rep_Name + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Office Location: </span> <span class='attribute'>" + data.Room_Num + "</span>";
+		html = html + "<br>"
+		html = html + "<span class='varname'>Phone/Fax: </span> <span class='attribute'>" + data.Phone_Fax + "</span>";
+		return html;
+		//this will return the string to the calling function
+		
+	}
 
 </script>
 

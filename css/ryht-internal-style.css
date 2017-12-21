@@ -81,18 +81,82 @@ ul{
     font-size: 80%;
     list-style: none;
     margin-left: 0;
-    line-height: 18px;
+    line-height: 20px;
     margin-bottom: 2px;
     }
   .legend ul.legend-labels li span {
     display: block;
     float: left;
-    height: 12px;
+    height: 14px;
     width: 24px;
     margin-right: 5px;
-    margin-left: 0;
-    border: 1px solid #999;
+    margin-left: 0px;
+    border: 0px solid #999;
     }
+#raising_blended_learners
+{
+	background:url(../markers/raising_blended_learners.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}	
+#raising_family_partnerships
+{
+	background:url(../markers/raising_family_partnerships.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#raising_texas_teachers
+{
+	background:url(../markers/raising_texas_teachers.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#raising_school_leaders
+{
+	background:url(../markers/raising_school_leaders.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#districts_of_innovation
+{
+	background:url(../markers/districts_of_innovation.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#texas_school_districts
+{
+	background:url(../markers/texas_school_districts.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#state_house_districts
+{
+	background:url(../markers/state_house_districts.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
+#state_senate_districts
+{
+	background:url(../markers/state_senate_districts.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}
   .legend .legend-source {
     font-size: 70%;
     color: #999;
