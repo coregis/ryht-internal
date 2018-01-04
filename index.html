@@ -29,6 +29,19 @@
         }
 		}
 
+//	populateZoomControl("school-districts-control", "texas-school-districts", "NAME");
+//	populateZoomControl("house-districts-control", "house-senate-districts", "District");
+//	populateZoomControl("senate-districts-control", "state-senate-districts", "District");
+
+		function populateZoomControl(selectID, sourceID, fieldName, layerName) {
+			polygonNames = getIDsList(sourceID, fieldName);
+			var select = document.getElementById(selectID);
+			select.options[0] = new Option(layerName);
+			for (i in polygonNames) {
+				select.options[select.options.length] = new Option(polygonNames[i], polygonNames[i]);
+			}
+		}
+
 		function getIDsList(sourceID, fieldName) {
 			layerID = map.getSource(sourceID).vectorLayerIds[0];
 			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
@@ -48,7 +61,7 @@
 			else { return featureNames.sort(); }
 		}
 
-		function zoomToPolygon(sourceID, itemID) {
+		function zoomToPolygon(sourceID, itemID, fieldName) {
 			// first quickly zoom out to the full layer area
 			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
 			// if we haven't passed in an itemID, then just stop there; otherwise continue with the zoom in
@@ -65,7 +78,7 @@
 						maxY = layerBounds[1];
 						// then step through features - first to find the item we want
 						for (i in features) {
-							if (features[i].id == itemID) {
+							if (features[i].properties[fieldName] == itemID) {
 								coords = features[i].toJSON().geometry.coordinates;
 								for (j in coords) {
 									// then the coords returned may be a simple array of coords, or an array of arrays if it's a multipolygon
@@ -111,6 +124,11 @@
 		<li onClick="zoomToPolygon('state-senate-districts');">State Senate Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 1);">State Senate District 1</li>
 	</ul>
+
+	<h3>Auto-populated lists</h3>
+	<select id="school-districts-control" onchange="zoomToPolygon('texas-school-districts', this.value, 'NAME');"></select>
+	<select id="house-districts-control" onchange="zoomToPolygon('state-house-districts', this.value, 'District');"></select>
+	<select id="senate-districts-control" onchange="zoomToPolygon('state-senate-districts', this.value, 'District');"></select>
 </div>
 
 <script>
@@ -282,6 +300,13 @@ map.on('load', function () {
 
     });
 
+
+	setTimeout(
+		function(){
+			populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
+			populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
+			populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+		}, 1000);
 });
 
 
