@@ -29,10 +29,26 @@
         }
 		}
 
-		function zoomToPolygon(sourceID, itemID) {
+		function getIDsList(sourceID, fieldName) {
 			layerID = map.getSource(sourceID).vectorLayerIds[0];
 			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
-			console.log(sourceID, map.getSource(sourceID), layerID, features);
+			featureNames = []
+			for (i in features) {
+				featureName = features[i].properties[fieldName]
+				if (typeof featureName !== undefined) {
+					if (featureNames.indexOf(featureName) < 0) {
+						featureNames.push(featureName);
+					}
+				}
+			}
+			// if the IDs are numeric we have to make sure they get sorted as numbers not as text
+			if (typeof featureNames[0] !== undefined && !isNaN(parseFloat(featureNames[0])) && isFinite(featureNames[0])) {
+				return featureNames.sort(function(a, b){return a-b});
+			}
+			else { return featureNames.sort(); }
+		}
+
+		function zoomToPolygon(sourceID, itemID) {
 			// first quickly zoom out to the full layer area
 			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
 			// if we haven't passed in an itemID, then just stop there; otherwise continue with the zoom in
@@ -86,16 +102,6 @@
 <div id='map'></div>
 
 <div id='controls'>
-	<h3>Click on a layer name below to toggle its visibility</h3>
-	<ul>
-		<li onClick="showHideLayer('raising-blended-learners-points');">Raising Blended Learners</li>
-		<li onClick="showHideLayer('raising-family-partnerships-points');">Raising Family Partnerships</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-		<li onClick="showHideLayer('raising-school-leaders-points');">Raising School Leaders</li>
-		<li onClick="showHideLayer('districts-of-innovation-points');">Districts of Innovation</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-		<li onClick="showHideLayer('raising-texas-teachers-points');">Raising Texas Teachers</li>
-	</ul>
 
 	<h3>Click on an item to zoom to it</h3>
 	<ul>
@@ -104,27 +110,7 @@
 		<li onClick="zoomToPolygon('state-house-districts');">State House Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts');">State Senate Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 1);">State Senate District 1</li>
-		<li onClick="zoomToPolygon('state-senate-districts', 23);">State Senate District 23</li>
-		<li onClick="zoomToPolygon('state-senate-districts', 29);">State Senate District 29</li>
 	</ul>
-</div>
-
-<div class='legend'>
-	<div class='legend-title'>Raise Your Hand Texas Programs</div>
-		<div class='legend-scale'>
-			  <ul class='legend-labels'>
-				<li><span style='background:#a80000;'></span>Select 150 Buildings</li>
-				<li><span style='background:#ff7f7f;'></span>Select 150 Parcels</li>
-				<li><span style='background:#5e6ea6;'></span>Vintage 500 Buildings</li>
-				<li><span style='background:#bee8ff;'></span>Vintage 500 Parcels</li>
-				<li><span style='background:#c9e6b5;'></span>Other Surveyed Buildings</li>
-				<li><span style='background:#ddfec6;'></span>Other Surveyed Parcels</li>
-				<li><span style='outline:#594;'></span>Survey Sectors</li>
-			  </ul>
-		</div>
-		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
-		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
-	</div>
 </div>
 
 <script>
