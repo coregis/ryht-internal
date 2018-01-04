@@ -30,51 +30,48 @@
 		}
 
 		function zoomToPolygon(sourceID, itemID) {
-//			map.fitBounds(map.getSource(sourceID).bounds, {linear: false});
-			layerBounds = map.getSource(sourceID).bounds;
-			layerID = map.getSource(sourceID).vectorLayerIds[0];
-			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
-			minX = layerBounds[2];
-			maxX = layerBounds[0];
-			minY = layerBounds[3];
-			maxY = layerBounds[1];
-			for (i in features) {
-				if (features[i].id == itemID) {
-					coords = features[i].toJSON().geometry.coordinates;
-					for (j in coords) {
-						if (!(coords[j][0] instanceof Array)) {
-							if (coords[j][0] < minX) { minX = coords[j][0]; }
-							if (coords[j][0] > maxX) { maxX = coords[j][0]; }
-							if (coords[j][1] < minY) { minY = coords[j][1]; }
-							if (coords[j][1] > maxY) { maxY = coords[j][1]; }
-						}
-						else {
-							for (k in coords[j]) {
-								if (!(coords[j][k][0] instanceof Array)) {
-									if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
-									if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
-									if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
-									if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
-								}
-								else {
-									for (l in coords[j][k]) {
-										if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
-										if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
-										if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
-										if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+			// first quickly zoom out to the full layer area
+			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
+			// use a timeout here to make sure that the zoom in doesn't try to start before the zoom out has finished
+			setTimeout(
+				function(){
+					layerBounds = map.getSource(sourceID).bounds;
+					layerID = map.getSource(sourceID).vectorLayerIds[0];
+					features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+					minX = layerBounds[2];
+					maxX = layerBounds[0];
+					minY = layerBounds[3];
+					maxY = layerBounds[1];
+					// then step through features - first to find the item we want
+					for (i in features) {
+						if (features[i].id == itemID) {
+							coords = features[i].toJSON().geometry.coordinates;
+							for (j in coords) {
+								// then the coords returned may be a simple array of coords, or an array of arrays if it's a multipolygon
+								for (k in coords[j]) {
+									if (!(coords[j][k][0] instanceof Array)) {
+										if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
+										if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
+										if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
+										if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
+									}
+									else {
+										for (l in coords[j][k]) {
+											if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
+											if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
+											if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
+											if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+										}
 									}
 								}
 							}
 						}
 					}
-				}
-			}
-			map.fitBounds(
-				[[minX, minY], [maxX, maxY]],
-				{
-					padding: 10
-				}
-			);
+					// having found the bounds, the rest is easy
+					map.fitBounds([[minX, minY], [maxX, maxY]], options={padding: 10});
+				},
+				100
+			); // end of setTimeout block
 		}
 	</script>
 </head>
