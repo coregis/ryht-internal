@@ -16,15 +16,17 @@
 }
 </style>
 	<script>
-		function showHideLayer(layerName) {
+		function showHideLayer(layerName, markerName) {
 			var visibility = map.getLayoutProperty(layerName, 'visibility');
 			console.log(layerName, visibility);
         if (visibility === 'visible') {
             map.setLayoutProperty(layerName, 'visibility', 'none');
             this.className = '';
+			document.getElementById(markerName).classList.add('inactive');
         } else {
             this.className = 'active';
             map.setLayoutProperty(layerName, 'visibility', 'visible');
+			document.getElementById(markerName).classList.remove('inactive');
         }
 		}
 	</script>
@@ -37,14 +39,14 @@
 	<div class='legend-title'>Click on a layer name below to toggle its visibility</div>
 		<div class='legend-scale'>
 			  <ul class='legend-labels'>
-				<li onClick="showHideLayer('raising-blended-learners-points');"><span id="raising_blended_learners"></span>Raising Blended Learners</li>
-				<li onClick="showHideLayer('raising-family-partnerships-points');"><span id="raising_family_partnerships"></span>Raising Family Partnerships</li>
-				<li onClick="showHideLayer('raising-texas-teachers-points');"><span id="raising_texas_teachers"></span>Raising Texas Teachers</li>
-				<li onClick="showHideLayer('raising-school-leaders-points');"><span id="raising_school_leaders"></span>Raising School Leaders</li>
-				<li onClick="showHideLayer('districts-of-innovation-points');"><span id="districts_of_innovation"></span>Districts of Innovation</li>
-				<li onClick="showHideLayer('texas-school-districts-lines');"><span id="texas_school_districts"></span>Texas School Districts</li>
-				<li onClick="showHideLayer('state-house-districts-lines');"><span id="state_house_districts"></span>State House Districts</li>
-				<li onClick="showHideLayer('state-senate-districts-lines');"><span id="state_senate_districts"></span>State Senate Districts</li>
+				<li onClick="showHideLayer('raising-blended-learners-points', markerName='raising_blended_learners');"><span id="raising_blended_learners"></span>Raising Blended Learners</li>
+				<li onClick="showHideLayer('raising-family-partnerships-points', markerName='raising_family_partnerships');"><span id="raising_family_partnerships"></span>Raising Family Partnerships</li>
+				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers"></span>Raising Texas Teachers</li>
+				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders"></span>Raising School Leaders</li>
+				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation"></span>Districts of Innovation</li>
+				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts"></span>Texas School Districts</li>
+				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts"></span>State House Districts</li>
+				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts"></span>State Senate Districts</li>
 			  </ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
