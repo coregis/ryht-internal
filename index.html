@@ -32,46 +32,49 @@
 		function zoomToPolygon(sourceID, itemID) {
 			// first quickly zoom out to the full layer area
 			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
-			// use a timeout here to make sure that the zoom in doesn't try to start before the zoom out has finished
-			setTimeout(
-				function(){
-					layerBounds = map.getSource(sourceID).bounds;
-					layerID = map.getSource(sourceID).vectorLayerIds[0];
-					features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
-					minX = layerBounds[2];
-					maxX = layerBounds[0];
-					minY = layerBounds[3];
-					maxY = layerBounds[1];
-					// then step through features - first to find the item we want
-					for (i in features) {
-						if (features[i].id == itemID) {
-							coords = features[i].toJSON().geometry.coordinates;
-							for (j in coords) {
-								// then the coords returned may be a simple array of coords, or an array of arrays if it's a multipolygon
-								for (k in coords[j]) {
-									if (!(coords[j][k][0] instanceof Array)) {
-										if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
-										if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
-										if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
-										if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
-									}
-									else {
-										for (l in coords[j][k]) {
-											if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
-											if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
-											if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
-											if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+			// if we haven't passed in an itemID, then just stop there; otherwise continue with the zoom in
+			if (typeof itemID !== 'undefined') {
+				// use a timeout here to make sure that the zoom in doesn't try to start before the zoom out has finished
+				setTimeout(
+					function(){
+						layerBounds = map.getSource(sourceID).bounds;
+						layerID = map.getSource(sourceID).vectorLayerIds[0];
+						features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+						minX = layerBounds[2];
+						maxX = layerBounds[0];
+						minY = layerBounds[3];
+						maxY = layerBounds[1];
+						// then step through features - first to find the item we want
+						for (i in features) {
+							if (features[i].id == itemID) {
+								coords = features[i].toJSON().geometry.coordinates;
+								for (j in coords) {
+									// then the coords returned may be a simple array of coords, or an array of arrays if it's a multipolygon
+									for (k in coords[j]) {
+										if (!(coords[j][k][0] instanceof Array)) {
+											if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
+											if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
+											if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
+											if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
+										}
+										else {
+											for (l in coords[j][k]) {
+												if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
+												if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
+												if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
+												if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+											}
 										}
 									}
 								}
 							}
 						}
-					}
-					// having found the bounds, the rest is easy
-					map.fitBounds([[minX, minY], [maxX, maxY]], options={padding: 10});
-				},
-				100
-			); // end of setTimeout block
+						// having found the bounds, the rest is easy
+						map.fitBounds([[minX, minY], [maxX, maxY]], options={padding: 10});
+					},
+					100
+				); // end of setTimeout block
+			}
 		}
 	</script>
 </head>
@@ -94,7 +97,7 @@
 	<h3>Click on an item to zoom to it</h3>
 	<ul>
 		<li onClick="map.fitBounds(map.getSource('raising-texas-teachers').bounds);">Raising Texas Teachers points</li>
-		<li onClick="map.fitBounds(map.getSource('state-senate-districts').bounds);">State Senate Districts (all)</li>
+		<li onClick="zoomToPolygon('state-senate-districts');">State Senate Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 1);">State Senate District 1</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 23);">State Senate District 23</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 29);">State Senate District 29</li>
