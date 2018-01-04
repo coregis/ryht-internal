@@ -30,6 +30,9 @@
 		}
 
 		function zoomToPolygon(sourceID, itemID) {
+			layerID = map.getSource(sourceID).vectorLayerIds[0];
+			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+			console.log(sourceID, map.getSource(sourceID), layerID, features);
 			// first quickly zoom out to the full layer area
 			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
 			// if we haven't passed in an itemID, then just stop there; otherwise continue with the zoom in
@@ -97,6 +100,8 @@
 	<h3>Click on an item to zoom to it</h3>
 	<ul>
 		<li onClick="map.fitBounds(map.getSource('raising-texas-teachers').bounds);">Raising Texas Teachers points</li>
+		<li onClick="zoomToPolygon('texas-school-districts');">Texas School Districts (all)</li>
+		<li onClick="zoomToPolygon('state-house-districts');">State House Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts');">State Senate Districts (all)</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 1);">State Senate District 1</li>
 		<li onClick="zoomToPolygon('state-senate-districts', 23);">State Senate District 23</li>
@@ -230,13 +235,13 @@ map.on('load', function () {
 
 	map.addSource('texas-school-districts', {
         type: 'vector',
-        url: 'mapbox://core-gis.3eruitf4'
+        url: 'mapbox://core-gis.e4af0de1'
     });
     map.addLayer({
         'id': 'texas-school-districts-lines',
         'type': 'line',
         'source': 'texas-school-districts',
-		'source-layer': 'texas_school_districts_v2-d54t25',
+		'source-layer': 'texas_school_districts_v2',
         'layout': {
             'visibility': 'visible',
 			'line-join': 'round',
