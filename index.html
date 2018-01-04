@@ -210,6 +210,23 @@ map.on('load', function () {
         },
         
     }, 'districts-of-innovation-points');
+	
+	map.addSource('school_house_senate_districts_UNION', {
+        type: 'vector',
+        url: 'mapbox://core-gis.a81c8ecf'
+    });
+    map.addLayer({
+        'id': 'school_house_senate_districts_UNION-poly',
+        'type': 'fill',
+        'source': 'school_house_senate_districts_UNION',
+		'source-layer': 'school_house_senate_districts_UNION',
+         'layout': {        },
+        'paint': {
+            'fill-color': 'rgba(200, 100, 240, 0)',
+            'fill-outline-color': 'rgba(200, 100, 240, 0)'
+			},
+        
+    }, 'districts-of-innovation-points');	
 
 
 	map.addSource('state-house-districts', {
@@ -252,7 +269,7 @@ map.on('load', function () {
 
 // When a click event occurs on a feature in the house districts layer, open a popup at the
     // location of the click, with description HTML from its properties.
-    map.on('click', 'state-house-districts-poly', function (e) {
+    map.on('click', 'school_house_senate_districts_UNION-poly', function (e) {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
             .setHTML(fillpopup(e.features[0].properties))
@@ -261,24 +278,22 @@ map.on('load', function () {
     });
 
 	 // Change the cursor to a pointer when the mouse is over the house districts layer.
-    map.on('mouseenter', 'state-house-districts-poly', function () {
+    map.on('mouseenter', 'school_house_senate_districts_UNION-poly', function () {
         map.getCanvas().style.cursor = 'pointer';
     });
 
     // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'state-house-districts-poly', function () {
+    map.on('mouseleave', 'school_house_senate_districts_UNION-poly', function () {
         map.getCanvas().style.cursor = '';
     });
 
 	function fillpopup(data){
 		var html = "";
-		html = html + "<span class='varname'>District: </span> <span class='attribute'>" + data.District + "</span>";
+		html = html + "<span class='varname'>School District: </span> <span class='attribute'>" + data.SchDistNam + "</span>";
 		html = html + "<br>"
-		html = html + "<span class='varname'>Representative: </span> <span class='attribute'>" + data.Rep_Name + "</span>";
+		html = html + "<span class='varname'>House District: </span> <span class='attribute'>" + data.HseDistNum + "</span>";
 		html = html + "<br>"
-		html = html + "<span class='varname'>Office Location: </span> <span class='attribute'>" + data.Room_Num + "</span>";
-		html = html + "<br>"
-		html = html + "<span class='varname'>Phone/Fax: </span> <span class='attribute'>" + data.Phone_Fax + "</span>";
+		html = html + "<span class='varname'>Senate District: </span> <span class='attribute'>" + data.SenDistNum + "</span>";
 		return html;
 		//this will return the string to the calling function
 		
