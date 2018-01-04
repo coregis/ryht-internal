@@ -30,6 +30,17 @@
 		}
 
 
+		function runWhenLoadComplete() {
+			if (!map.loaded()) {
+				setTimeout(runWhenLoadComplete, 100);
+			}
+			else {
+				populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
+				populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
+				populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+			}
+		}
+
 		function populateZoomControl(selectID, sourceID, fieldName, layerName) {
 			polygonNames = getIDsList(sourceID, fieldName);
 			var select = document.getElementById(selectID);
@@ -298,12 +309,7 @@ map.on('load', function () {
     });
 
 
-	setTimeout(
-		function(){
-			populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
-			populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
-			populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
-		}, 1000);
+	runWhenLoadComplete();
 });
 
 
