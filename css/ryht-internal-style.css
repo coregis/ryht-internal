@@ -36,6 +36,26 @@ img {
 	max-width: 300px;
 }
 
+.zoom {
+	background-color: #ffffff;
+	opacity:.8;
+	border: 1px solid #989797;
+	width: 225px;
+	text-align: left;
+	padding: 10px;
+    position: fixed;
+	z-index : 1;
+    left: 0;
+	bottom: 0;
+	font-family: "Helvetica Neue", helvetica, arial, sans-serif;	
+	font-weight: normal;
+	color: #363635;
+	text-decoration: none;
+	margin-right: 10px;
+	margin-bottom: 20px;
+	overflow: hidden; /*planning ahead to clear floats*/
+}
+
 .legend {
 	background-color: #ffffff;
 	opacity:.8;

@@ -29,11 +29,112 @@
 			document.getElementById(markerName).classList.remove('inactive');
         }
 		}
+		
+//These are the four functions written by Eldan that power the zoom-to-district feature
+// runWhenLoadComplete() checks if the map has finished loading data, and once it has then it calls the next one.
+//populateZoomControl() fills the dropdowns with options generated from reading the data layers for all the district names.
+//getIDsList() does the actual work of fetching the district names
+//zoomToPolygon() zooms the map to the district extent
+
+function runWhenLoadComplete() {
+			if (!map.loaded()) {
+				setTimeout(runWhenLoadComplete, 100);
+			}
+			else {
+				populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
+				populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
+				populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+			}
+		}
+
+		function populateZoomControl(selectID, sourceID, fieldName, layerName) {
+			polygonNames = getIDsList(sourceID, fieldName);
+			var select = document.getElementById(selectID);
+			select.options[0] = new Option(layerName);
+			for (i in polygonNames) {
+				select.options[select.options.length] = new Option(polygonNames[i], polygonNames[i]);
+			}
+		}
+
+		function getIDsList(sourceID, fieldName) {
+			layerID = map.getSource(sourceID).vectorLayerIds[0];
+			features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+			featureNames = []
+			for (i in features) {
+				featureName = features[i].properties[fieldName]
+				if (typeof featureName !== undefined) {
+					if (featureNames.indexOf(featureName) < 0) {
+						featureNames.push(featureName);
+					}
+				}
+			}
+			// if the IDs are numeric we have to make sure they get sorted as numbers not as text
+			if (typeof featureNames[0] !== undefined && !isNaN(parseFloat(featureNames[0])) && isFinite(featureNames[0])) {
+				return featureNames.sort(function(a, b){return a-b});
+			}
+			else { return featureNames.sort(); }
+		}
+
+		function zoomToPolygon(sourceID, itemID, fieldName) {
+			// first quickly zoom out to the full layer area
+			map.fitBounds(map.getSource(sourceID).bounds, options={duration: 0});
+			// if we haven't passed in an itemID, then just stop there; otherwise continue with the zoom in
+			if (typeof itemID !== 'undefined') {
+				// use a timeout here to make sure that the zoom in doesn't try to start before the zoom out has finished
+				setTimeout(
+					function(){
+						layerBounds = map.getSource(sourceID).bounds;
+						layerID = map.getSource(sourceID).vectorLayerIds[0];
+						features = map.querySourceFeatures(sourceID, {'sourceLayer': layerID})
+						minX = layerBounds[2];
+						maxX = layerBounds[0];
+						minY = layerBounds[3];
+						maxY = layerBounds[1];
+						// then step through features - first to find the item we want
+						for (i in features) {
+							if (features[i].properties[fieldName] == itemID) {
+								coords = features[i].toJSON().geometry.coordinates;
+								for (j in coords) {
+									// then the coords returned may be a simple array of coords, or an array of arrays if it's a multipolygon
+									for (k in coords[j]) {
+										if (!(coords[j][k][0] instanceof Array)) {
+											if (coords[j][k][0] < minX) { minX = coords[j][k][0]; }
+											if (coords[j][k][0] > maxX) { maxX = coords[j][k][0]; }
+											if (coords[j][k][1] < minY) { minY = coords[j][k][1]; }
+											if (coords[j][k][1] > maxY) { maxY = coords[j][k][1]; }
+										}
+										else {
+											for (l in coords[j][k]) {
+												if (coords[j][k][l][0] < minX) { minX = coords[j][k][l][0]; }
+												if (coords[j][k][l][0] > maxX) { maxX = coords[j][k][l][0]; }
+												if (coords[j][k][l][1] < minY) { minY = coords[j][k][l][1]; }
+												if (coords[j][k][l][1] > maxY) { maxY = coords[j][k][l][1]; }
+											}
+										}
+									}
+								}
+							}
+						}
+						// having found the bounds, the rest is easy
+						map.fitBounds([[minX, minY], [maxX, maxY]], options={padding: 10});
+					},
+					100
+				); // end of setTimeout block
+			}
+		}
 	</script>
 </head>
 <body>
 
 <div id='map'></div>
+
+<!--Throw this into a flyout-->
+<div class='zoom'>
+	<select id="school-districts-control" onchange="zoomToPolygon('texas-school-districts', this.value, 'NAME');"></select>
+        <select id="house-districts-control" onchange="zoomToPolygon('state-house-districts', this.value, 'District');"></select>
+        <select id="senate-districts-control" onchange="zoomToPolygon('state-senate-districts', this.value, 'District');"></select>
+</div>		
+
 
 <div class='legend'>
 	<div class='legend-title'>Click on a layer name below to toggle its visibility</div>
@@ -264,11 +365,13 @@ map.on('load', function () {
         
     });
 
+	runWhenLoadComplete();
+	
 });
 
-
-// When a click event occurs on a feature in the house districts layer, open a popup at the
-    // location of the click, with description HTML from its properties.
+// This is the popup for the merged boundary layers
+// When a click event occurs on a feature in the unioned districts layer, open a popup at the
+// location of the click, with description HTML from its properties.
     map.on('click', 'school_house_senate_districts_UNION-poly', function (e) {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
@@ -298,7 +401,7 @@ map.on('load', function () {
 		//this will return the string to the calling function
 		
 	}
-
+	
 </script>
 
 </body>
