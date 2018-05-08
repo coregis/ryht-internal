@@ -4,7 +4,8 @@ const request = require('request');
 
 module.exports.handler = (event, context, callback) => {
   if (!event.pathParameters.id) return callback(null, error(400, 'no spreadsheet ID provided'));
-  const id = event.pathParameters.id;
+  var url = new URL(window.location.href)
+  const id = url.searchParams.get("sheet");
   const url = `https://spreadsheets.google.com/feeds/cells/${id}/od6/public/basic?alt=json`;
 
   request.get(url, (err, res, body) => {
