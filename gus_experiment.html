@@ -232,45 +232,61 @@ var layers = map.getStyle().layers;
         }
     }
 */
+
+
+/*
+	DIFFERENCES BETWEEN HOW WE EMBED A GOOGLE SHEET VS A MAPBOX LAYER
+	1. start by calling the gus_api() function with two arguments.  The first is the ID for the sheet you want to read in, and the second is an anonymous function that will contain the map.addSource() and map.addLayer() calls that depend on this data.  Like this:
+		gus_api("IDstringfromgoogle", function(jsondata) {addSource and addLayer calls go inside these curly braces});
+	2. in the map.addSource() call, change type to 'geojson', and replace the url line with:
+		data: jsondata
+	3. remove the source-layer argument from map.addLayer()
+	4. remove the final, unnamed argument from map.addLayer() (the one that specifies which layer to put this one before)
+	5. it _might_ be necessary to also remove the 'before' arguments from the layers that specify district boundaries, because there is a slight delay associated with loading from google sheets, which in turn means that Mapbox GL JS complains that the layer you're trying to go behind doesn't exist [yet].  If this turns out to be a problem, we should be able to remedy it by putting a set of map.moveLayer() calls (see https://www.mapbox.com/mapbox-gl-js/api/#map#movelayer ) in the runWhenLoadComplete() function so that they fire _after_ all the layers have been created.
+
+	The 'raising-family-partnerships' layer definition at the top of the following map.on('load') call demonstrates #1-#4.  I've made the indentation of the 'raising-blended-learners' old-style layer definition consistent with it, so that comparing is easier.
+*/
+
+
+
 map.on('load', function () {
-        map.addSource('raising-blended-learners', {
-        type: 'vector',
-        url: 'mapbox://core-gis.cyvv2xc0'
-    });
-    map.addLayer({
-        'id': 'raising-blended-learners-points',
-        'type': 'symbol',
-        'source': 'raising-blended-learners',
-        'layout': {
-            'visibility': 'visible'
-        },
-        layout: {
-		  'icon-image': 'raising_blended_learners_v2',
-		  'icon-allow-overlap': true,
-		  },
-		'source-layer': 'raising_blended_learners_v1-c9zny7'
-    }, 'place-town');
-
-
-
 	gus_api("1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", function(jsondata) {
-	console.log(jsondata);
-	console.log(jsondata.features);
-	map.addSource('raising-family-partnerships', {
-        type: 'geojson',
-				data: jsondata
-    });
-    map.addLayer({
-        'id': 'raising-family-partnerships-points',
-        'type': 'symbol',
-        'source': 'raising-family-partnerships',
-        layout: {
-		  'icon-image': 'raising_family_partnerships_v2',
-		  'icon-allow-overlap': true,
-		  }
+		map.addSource('raising-family-partnerships', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'raising-family-partnerships-points',
+			'type': 'symbol',
+			'source': 'raising-family-partnerships',
+			layout: {
+				'icon-image': 'raising_family_partnerships_v2',
+				'icon-allow-overlap': true,
+			}
+		});
+	});
 
-    });
-  });
+
+	map.addSource('raising-blended-learners', {
+		type: 'vector',
+		url: 'mapbox://core-gis.cyvv2xc0'
+	});
+	map.addLayer({
+		'id': 'raising-blended-learners-points',
+		'type': 'symbol',
+		'source': 'raising-blended-learners',
+		'layout': {
+			'visibility': 'visible'
+		},
+		layout: {
+			'icon-image': 'raising_blended_learners_v2',
+			'icon-allow-overlap': true,
+		},
+		'source-layer': 'raising_blended_learners_v1-c9zny7'
+	}, 'place-town');
+
+
+
 
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
