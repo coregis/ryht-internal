@@ -252,10 +252,13 @@ map.on('load', function () {
     }, 'place-town');
 
 
+
+	gus_api("1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", function(jsondata) {
+	console.log(jsondata);
+	console.log(jsondata.features);
 	map.addSource('raising-family-partnerships', {
-        type: 'vector',
-				data: gus_api("1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck")
-//        url: 'https://coregis.github.io/ryht-internal/gus_api.html?sheet=1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck'
+        type: 'geojson',
+				data: jsondata
     });
     map.addLayer({
         'id': 'raising-family-partnerships-points',
@@ -264,9 +267,10 @@ map.on('load', function () {
         layout: {
 		  'icon-image': 'raising_family_partnerships_v2',
 		  'icon-allow-overlap': true,
-		  },
-        'source-layer': 'raising_family_partnerships_v-66401r'
+		  }
+
     }, 'raising-blended-learners-points');
+  });
 
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
@@ -471,7 +475,7 @@ function fetchJSONFile(path, callback) {
     httpRequest.send();
 }
 
-function gus_api(id) {
+function gus_api(id, callback) {
   const url = `https://spreadsheets.google.com/feeds/cells/${id}/od6/public/basic?alt=json`;
 
   fetchJSONFile(url, function(data) {
@@ -532,8 +536,8 @@ function gus_api(id) {
       gj.features.push(feature);
     }
 
-		console.log(JSON.stringify(gj));
-    return(JSON.stringify(gj));
+//		console.log(JSON.stringify(gj));
+    callback(gj);
   });
 };
 </script>
