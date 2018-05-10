@@ -266,7 +266,25 @@ map.on('load', function () {
 		});
 	});
 
+	
+	gus_api("1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE", function(jsondata) {
+		map.addSource('raising-blended-learners', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'raising-blended-learners',
+			'type': 'symbol',
+			'source': 'raising-blended-learners',
+			layout: {
+				'icon-image': 'raising_blended_learners_v2',
+				'icon-allow-overlap': true,
+			}
+		});
+	});
 
+	
+	/*
 	map.addSource('raising-blended-learners', {
 		type: 'vector',
 		url: 'mapbox://core-gis.cyvv2xc0'
@@ -285,8 +303,7 @@ map.on('load', function () {
 		'source-layer': 'raising_blended_learners_v1-c9zny7'
 	}, 'place-town');
 
-
-
+*/
 
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
