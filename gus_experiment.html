@@ -191,6 +191,7 @@ function closeNav() {
 			  <ul class='legend-labels'>
 				<li onClick="showHideLayer('raising-blended-learners-points', markerName='raising_blended_learners');"><span id="raising_blended_learners"></span>Raising Blended Learners</li>
 				<li onClick="showHideLayer('raising-family-partnerships-points', markerName='raising_family_partnerships');"><span id="raising_family_partnerships"></span>Raising Family Partnerships</li>
+				<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars"></span>Charles Butt Scholars</li>	
 				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers"></span>Raising Texas Teachers</li>
 				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders"></span>Raising School Leaders</li>
 				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation"></span>Districts of Innovation</li>
@@ -273,7 +274,7 @@ map.on('load', function () {
 			data: jsondata
 		});
 		map.addLayer({
-			'id': 'raising-blended-learners',
+			'id': 'raising-blended-learners-points',
 			'type': 'symbol',
 			'source': 'raising-blended-learners',
 			layout: {
@@ -282,7 +283,72 @@ map.on('load', function () {
 			}
 		});
 	});
+	
+	gus_api("1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4", function(jsondata) {
+		map.addSource('charles-butt-scholars', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'charles-butt-scholars-points',
+			'type': 'symbol',
+			'source': 'charles-butt-scholars',
+			layout: {
+				'icon-image': 'charles_butt_scholars_v2',
+				'icon-allow-overlap': true,
+			}
+		});
+	});	
 
+	gus_api("1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs", function(jsondata) {
+		map.addSource('raising-texas-teachers', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'raising-texas-teachers-points',
+			'type': 'symbol',
+			'source': 'raising-texas-teachers',
+			layout: {
+				'icon-image': 'raising_texas_teachers_v3',
+				'icon-allow-overlap': true,
+			}
+		});
+	});		
+
+	gus_api("1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0", function(jsondata) {
+		map.addSource('raising-school-leaders', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'raising-school-leaders-points',
+			'type': 'symbol',
+			'source': 'raising-school-leaders',
+			layout: {
+				/*the icon-image is pulling the icon from the Mapbox style referenced above in the var map*/
+				'icon-image': 'raising_school_leaders_v2',
+				'icon-allow-overlap': true,
+			}
+		});
+	});
+	
+	gus_api("1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0", function(jsondata) {
+		map.addSource('districts-of-innovation', {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': 'districts-of-innovation-points',
+			'type': 'symbol',
+			'source': 'districts-of-innovation',
+			layout: {
+				/*the icon-image is pulling the icon from the Mapbox style referenced above in the var map*/
+				'icon-image': 'districts_of_innovation_v2',
+				'icon-allow-overlap': true,
+			}
+		});
+	});	
 	
 	/*
 	map.addSource('raising-blended-learners', {
@@ -305,6 +371,7 @@ map.on('load', function () {
 
 */
 
+/*
 	map.addSource('raising-texas-teachers', {
         type: 'vector',
         url: 'mapbox://core-gis.bev3k3sc'
@@ -322,8 +389,9 @@ map.on('load', function () {
 		  },
         'source-layer': 'raising_texas_teachers_v1-98thqt'
     }, 'raising-family-partnerships-points');
+*/
 
-
+/*
 	map.addSource('raising-school-leaders', {
         type: 'vector',
         url: 'mapbox://core-gis.69ngzsbu'
@@ -341,7 +409,9 @@ map.on('load', function () {
 		  },
         'source-layer': 'raising_school_leaders_v1-7g2pj6'
     }, 'raising-texas-teachers-points');
+*/
 
+/*
 	map.addSource('districts-of-innovation', {
         type: 'vector',
         url: 'mapbox://core-gis.b1ufwbfk'
@@ -357,6 +427,7 @@ map.on('load', function () {
         'source-layer': 'districts_of_innovation_v1-4i92yo'
     },'raising-school-leaders-points');
 
+*/
 
 	map.addSource('texas-school-districts', {
         type: 'vector',

@@ -135,9 +135,17 @@ ul{
 	display: block;
 	float: left;
 }
+#charles_butt_scholars
+{
+	background:url(../markers/charles_butt_scholars.svg) left center;
+	width:11px;
+	height:16px;
+	display: block;
+	float: left;
+}	
 #raising_texas_teachers
 {
-	background:url(../markers/raising_texas_teachers.svg) left center;
+	background:url(../markers/raising_texas_teachers_v3.svg) left center;
 	width:11px;
 	height:16px;
 	display: block;
