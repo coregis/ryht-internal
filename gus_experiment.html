@@ -332,7 +332,7 @@ map.on('load', function () {
 			}
 		});
 	});
-	
+
 	gus_api("1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g", function(jsondata) {
 		map.addSource('districts-of-innovation', {
 			type: 'geojson',
@@ -343,12 +343,12 @@ map.on('load', function () {
 			'type': 'symbol',
 			'source': 'districts-of-innovation',
 			layout: {
-				/*the icon-image is pulling the icon from the Mapbox style referenced above in the var map*/
 				'icon-image': 'districts_of_innovation_v2',
 				'icon-allow-overlap': true,
 			}
 		});
 	});	
+
 	
 	/*
 	map.addSource('raising-blended-learners', {
