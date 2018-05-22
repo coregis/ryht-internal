@@ -191,7 +191,7 @@ function closeNav() {
 			  <ul class='legend-labels'>
 				<li onClick="showHideLayer('raising-blended-learners-points', markerName='raising_blended_learners');"><span id="raising_blended_learners"></span>Raising Blended Learners</li>
 				<li onClick="showHideLayer('raising-family-partnerships-points', markerName='raising_family_partnerships');"><span id="raising_family_partnerships"></span>Raising Family Partnerships</li>
-				<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars"></span>Charles Butt Scholars</li>	
+				<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars"></span>Charles Butt Scholars</li>
 				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers"></span>Raising Texas Teachers</li>
 				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders"></span>Raising School Leaders</li>
 				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation"></span>Districts of Innovation</li>
@@ -236,198 +236,87 @@ var layers = map.getStyle().layers;
 
 
 /*
-	DIFFERENCES BETWEEN HOW WE EMBED A GOOGLE SHEET VS A MAPBOX LAYER
-	1. start by calling the gus_api() function with two arguments.  The first is the ID for the sheet you want to read in, and the second is an anonymous function that will contain the map.addSource() and map.addLayer() calls that depend on this data.  Like this:
-		gus_api("IDstringfromgoogle", function(jsondata) {addSource and addLayer calls go inside these curly braces});
-	2. in the map.addSource() call, change type to 'geojson', and replace the url line with:
-		data: jsondata
-	3. remove the source-layer argument from map.addLayer()
-	4. remove the final, unnamed argument from map.addLayer() (the one that specifies which layer to put this one before)
-	5. it _might_ be necessary to also remove the 'before' arguments from the layers that specify district boundaries, because there is a slight delay associated with loading from google sheets, which in turn means that Mapbox GL JS complains that the layer you're trying to go behind doesn't exist [yet].  If this turns out to be a problem, we should be able to remedy it by putting a set of map.moveLayer() calls (see https://www.mapbox.com/mapbox-gl-js/api/#map#movelayer ) in the runWhenLoadComplete() function so that they fire _after_ all the layers have been created.
-
-	The 'raising-family-partnerships' layer definition at the top of the following map.on('load') call demonstrates #1-#4.  I've made the indentation of the 'raising-blended-learners' old-style layer definition consistent with it, so that comparing is easier.
+	Updated method for adding point layers using the GUS API:
+	Simply call the gus_api() function with the arguments as shown below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
 */
 
+
+function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
+	gus_api(gusID, function(jsondata) {
+		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
+			var visibilityState = 'none';
+		}	else {
+			var visibilityState = 'visible';
+		}
+		map.addSource(sourceName, {
+			type: 'geojson',
+			data: jsondata
+		});
+		map.addLayer({
+			'id': layerName,
+			'type': 'symbol',
+			'source': sourceName,
+			layout: {
+				'icon-image': icon,
+				'icon-allow-overlap': true,
+				'visibility': visibilityState
+			}
+		});
+	});
+}
 
 
 map.on('load', function () {
-	gus_api("1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", function(jsondata) {
-		map.addSource('raising-family-partnerships', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'raising-family-partnerships-points',
-			'type': 'symbol',
-			'source': 'raising-family-partnerships',
-			layout: {
-				'icon-image': 'raising_family_partnerships',
-				'icon-allow-overlap': true,
-			}
-		});
-	});
+	addPointLayer(
+		map,
+		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck",
+		'raising-family-partnerships', // this one's the data source name
+		'raising-family-partnerships-points',
+		'raising_family_partnerships' // this one's the icon image name
+	);
 
-	
-	gus_api("1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE", function(jsondata) {
-		map.addSource('raising-blended-learners', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'raising-blended-learners-points',
-			'type': 'symbol',
-			'source': 'raising-blended-learners',
-			layout: {
-				'icon-image': 'raising_blended_learners',
-				'icon-allow-overlap': true,
-			}
-		});
-	});
-	
-	gus_api("1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4", function(jsondata) {
-		map.addSource('charles-butt-scholars', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'charles-butt-scholars-points',
-			'type': 'symbol',
-			'source': 'charles-butt-scholars',
-			layout: {
-				'icon-image': 'charles_butt_scholars',
-				'icon-allow-overlap': true,
-			}
-		});
-	});	
+	addPointLayer(
+		map,
+		"1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE",
+		'raising-blended-learners',
+		'raising-blended-learners-points',
+		'raising_blended_learners'
+	);
 
-	gus_api("1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs", function(jsondata) {
-		map.addSource('raising-texas-teachers', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'raising-texas-teachers-points',
-			'type': 'symbol',
-			'source': 'raising-texas-teachers',
-			layout: {
-				'icon-image': 'raising_texas_teachers',
-				'icon-allow-overlap': true,
-			}
-		});
-	});		
+	addPointLayer(
+		map,
+		"1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4",
+		'charles-butt-scholars',
+		'charles-butt-scholars-points',
+		'charles_butt_scholars',
+		true
+	);
 
-	gus_api("1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0", function(jsondata) {
-		map.addSource('raising-school-leaders', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'raising-school-leaders-points',
-			'type': 'symbol',
-			'source': 'raising-school-leaders',
-			layout: {
-				/*the icon-image is pulling the icon from the Mapbox style referenced above in the var map*/
-				'icon-image': 'raising_school_leaders',
-				'icon-allow-overlap': true,
-			}
-		});
-	});
+	addPointLayer(
+		map,
+		"1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs",
+		'raising-texas-teachers',
+		'raising-texas-teachers-points',
+		'raising_texas_teachers'
+	);
 
-	gus_api("1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g", function(jsondata) {
-		map.addSource('districts-of-innovation', {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': 'districts-of-innovation-points',
-			'type': 'symbol',
-			'source': 'districts-of-innovation',
-			layout: {
-				'icon-image': 'districts_of_innovation',
-				'icon-allow-overlap': true,
-			}
-		});
-	});	
+	addPointLayer(
+		map,
+		"1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0",
+		'raising-school-leaders',
+		'raising-school-leaders-points',
+		'raising_school_leaders'
+	);
 
-	
-	/*
-	map.addSource('raising-blended-learners', {
-		type: 'vector',
-		url: 'mapbox://core-gis.cyvv2xc0'
-	});
-	map.addLayer({
-		'id': 'raising-blended-learners-points',
-		'type': 'symbol',
-		'source': 'raising-blended-learners',
-		'layout': {
-			'visibility': 'visible'
-		},
-		layout: {
-			'icon-image': 'raising_blended_learners_v2',
-			'icon-allow-overlap': true,
-		},
-		'source-layer': 'raising_blended_learners_v1-c9zny7'
-	}, 'place-town');
+	addPointLayer(
+		map,
+		"1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g",
+		'districts-of-innovation',
+		'districts-of-innovation-points',
+		'districts_of_innovation'
+	);
 
-*/
 
-/*
-	map.addSource('raising-texas-teachers', {
-        type: 'vector',
-        url: 'mapbox://core-gis.bev3k3sc'
-    });
-    map.addLayer({
-        'id': 'raising-texas-teachers-points',
-        'type': 'symbol',
-        'source': 'raising-texas-teachers',
-        'layout': {
-            'visibility': 'visible'
-        },
-        layout: {
-		  'icon-image': 'raising_texas_teachers_v2',
-		  'icon-allow-overlap': true,
-		  },
-        'source-layer': 'raising_texas_teachers_v1-98thqt'
-    }, 'raising-family-partnerships-points');
-*/
-
-/*
-	map.addSource('raising-school-leaders', {
-        type: 'vector',
-        url: 'mapbox://core-gis.69ngzsbu'
-    });
-    map.addLayer({
-        'id': 'raising-school-leaders-points',
-        'type': 'symbol',
-        'source': 'raising-school-leaders',
-        'layout': {
-            'visibility': 'visible'
-        },
-        layout: {
-		  'icon-image': 'raising_school_leaders_v2',
-		  'icon-allow-overlap': true,
-		  },
-        'source-layer': 'raising_school_leaders_v1-7g2pj6'
-    }, 'raising-texas-teachers-points');
-*/
-
-/*
-	map.addSource('districts-of-innovation', {
-        type: 'vector',
-        url: 'mapbox://core-gis.b1ufwbfk'
-    });
-    map.addLayer({
-        'id': 'districts-of-innovation-points',
-        'type': 'symbol',
-        'source': 'districts-of-innovation',
-        layout: {
-		  'icon-image': 'districts_of_innovation_v2',
-		  'icon-allow-overlap': true,
-		  },
-        'source-layer': 'districts_of_innovation_v1-4i92yo'
-    },'raising-school-leaders-points');
-
-*/
 
 	map.addSource('texas-school-districts', {
         type: 'vector',
