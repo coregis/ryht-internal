@@ -235,11 +235,6 @@ var layers = map.getStyle().layers;
 */
 
 
-/*
-	Updated method for adding point layers using the GUS API:
-	Simply call the gus_api() function with the arguments as shown below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
-*/
-
 
 function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 	gus_api(gusID, function(jsondata) {
@@ -247,6 +242,7 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 			var visibilityState = 'none';
 		}	else {
 			var visibilityState = 'visible';
+			document.getElementById(icon).classList.remove('inactive');
 		}
 		map.addSource(sourceName, {
 			type: 'geojson',
@@ -262,21 +258,21 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 				'visibility': visibilityState
 			}
 		});
-		if (visibilityState === 'visible') {
-			document.getElementById(icon).classList.remove('inactive');
-
-		}
 	});
 }
 
+/*
+	Updated method for adding point layers using the GUS API:
+	Simply call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
+*/
 
 map.on('load', function () {
 	addPointLayer(
 		map,
-		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck",
-		'raising-family-partnerships', // this one's the data source name
-		'raising-family-partnerships-points',
-		'raising_family_partnerships' // this one's the icon image name
+		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", // Google Sheets ID
+		'raising-family-partnerships', // this one will be the data source name
+		'raising-family-partnerships-points', // layer name
+		'raising_family_partnerships' // this one will be the icon image name
 	);
 
 	addPointLayer(
@@ -293,7 +289,7 @@ map.on('load', function () {
 		'charles-butt-scholars',
 		'charles-butt-scholars-points',
 		'charles_butt_scholars',
-		true
+		true // set the optional final argument to true to have the layer visible on load
 	);
 
 	addPointLayer(
