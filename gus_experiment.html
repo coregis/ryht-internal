@@ -54,6 +54,7 @@ function runWhenLoadComplete() {
 			for (i in polygonNames) {
 				select.options[select.options.length] = new Option(polygonNames[i], polygonNames[i]);
 			}
+			showHideLayer(sourceID+"-lines", sourceID.replace("-", "_").replace("-", "_"));
 		}
 
 		function getIDsList(sourceID, fieldName) {
