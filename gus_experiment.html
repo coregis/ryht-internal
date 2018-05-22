@@ -195,9 +195,9 @@ function closeNav() {
 				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers" class="inactive"></span>Raising Texas Teachers</li>
 				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders" class="inactive"></span>Raising School Leaders</li>
 				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation" class="inactive"></span>Districts of Innovation</li>
-				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts"></span>Texas School Districts</li>
-				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts"></span>State House Districts</li>
-				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts"></span>State Senate Districts</li>
+				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
+				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
+				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts" class="inactive"></span>State Senate Districts</li>
 			  </ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
@@ -332,7 +332,7 @@ map.on('load', function () {
         'source': 'texas-school-districts',
 		'source-layer': 'texas_school_districts_v2',
         'layout': {
-            'visibility': 'visible',
+            'visibility': 'none',
 			'line-join': 'round',
 			'line-cap': 'round'
         },
@@ -352,7 +352,7 @@ map.on('load', function () {
         'source': 'state-senate-districts',
 		'source-layer': 'state_senate_districts-0g2odu',
         'layout': {
-            'visibility': 'visible',
+            'visibility': 'none',
 			'line-join': 'round',
 			'line-cap': 'round'
         },
@@ -391,7 +391,7 @@ map.on('load', function () {
         'source': 'state-house-districts',
 		'source-layer': 'state_house_districts-1vl4x8',
         'layout': {
-            'visibility': 'visible',
+            'visibility': 'none',
 			'line-join': 'round',
 			'line-cap': 'round'
         },
