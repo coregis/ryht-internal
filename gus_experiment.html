@@ -18,7 +18,7 @@
 	<script>
 		function showHideLayer(layerName, markerName) {
 			var visibility = map.getLayoutProperty(layerName, 'visibility');
-			console.log(layerName, visibility);
+//			console.log(layerName, visibility);
         if (visibility === 'visible') {
             map.setLayoutProperty(layerName, 'visibility', 'none');
             this.className = '';
@@ -425,7 +425,7 @@ map.on('load', function () {
             .setLngLat(e.lngLat)
             .setHTML(fillpopup(e.features[0].properties))
             .addTo(map);
-		console.log(e.features[0].properties);
+//		console.log(e.features[0].properties);
     });
 
 	 // Change the cursor to a pointer when the mouse is over the house districts layer.
