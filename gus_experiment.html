@@ -240,6 +240,7 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 	gus_api(gusID, function(jsondata) {
 		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
 			var visibilityState = 'none';
+			document.getElementById(icon).classList.add('inactive');
 		}	else {
 			var visibilityState = 'visible';
 			document.getElementById(icon).classList.remove('inactive');
