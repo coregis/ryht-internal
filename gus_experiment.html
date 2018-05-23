@@ -418,6 +418,9 @@ map.on('load', function () {
 
 });
 
+
+
+
 // This is the popup for the merged boundary layers
 // When a click event occurs on a feature in the unioned districts layer, open a popup at the
 // location of the click, with description HTML from its properties.
@@ -535,6 +538,104 @@ function gus_api(id, callback) {
     callback(gj);
   });
 };
+
+
+/**
+ * dynamicallyAccessCSS
+ *
+ * @link    https://github.com/Frazer/dynamicallyAccessCSS.js
+ * @license MIT
+ *
+ * @author  Frazer Kirkman
+ * @published 2016
+
+MIT License
+
+Copyright (c) 2017 Frazer Kirkman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+ */
+
+var returnStyleSheetRules = (function (){
+	if(!document.styleSheets[0]){
+			// Create the <style> tag
+			var style = document.createElement("style");
+			// WebKit hack :(
+			style.appendChild(document.createTextNode(""));
+			// Add the <style> element to the page
+			document.head.appendChild(style);
+
+	}
+	if(document.styleSheets[0].cssRules){
+		return function (item) {return  item.cssRules;}
+	}
+	else if (document.styleSheets[0].rules) {
+	    return function (item) {return  item.rules;}
+	}
+})();
+
+function getCSSRule(search, returnArray) {
+
+	let styleSheets = [].map.call(document.styleSheets, function(item) {
+	  return [].slice.call(returnStyleSheetRules(item));
+	});
+
+	let rule = null;
+	let rules = [];
+	styleSheets.forEach(function(thisSheet){
+	  let findTheRule = thisSheet.filter(function(rule) {
+	    if(rule.selectorText){
+	    	return rule.selectorText.lastIndexOf(search)===0  && search.length===rule.selectorText.length;
+	    }else return false;
+	  });
+
+	  if(findTheRule.length){
+			rules = rules.concat(findTheRule);
+			rule = findTheRule[findTheRule.length-1];    //findTheRule will contain all rules that reference the selector. findTheRule[findTheRule.length-1] contains the last rule.
+	  }
+	});
+	if (rule){
+		if(returnArray){
+			return rules;
+		}else{
+			return rule;
+		}
+	}else{
+		let sheet = document.styleSheets[0];   //if the rule we are looking for doesn't exist, we create it
+        var pos = sheet.cssRules.length;
+        if("insertRule" in sheet) {
+                sheet.insertRule(search + "{  }",pos);
+        }
+        else if("addRule" in sheet) {
+                sheet.addRule(search, "",pos);
+        }
+		if(returnArray){
+			return returnStyleSheetRules(document.styleSheets[0]);
+		}else{
+			return returnStyleSheetRules(document.styleSheets[0])[pos];
+		}
+	}
+}
+
+
 </script>
 
 </body>
