@@ -223,6 +223,8 @@ var map = new mapboxgl.Map({
 	maxBounds:  bounds // sets bounds as max
 
 });
+
+var originalZoomLevel = map.getZoom();
 /*
 var layers = map.getStyle().layers;
     // Find the index of the first symbol layer in the map style
@@ -259,6 +261,9 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 				'icon-allow-overlap': true,
 				'visibility': visibilityState
 			}
+		});
+		map.on("zoomend", function(){
+			map.setLayoutProperty(layerName, 'icon-size', 1 + (map.getZoom() / originalZoomLevel - 1) * 10);
 		});
 	});
 }
