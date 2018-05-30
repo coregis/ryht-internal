@@ -354,6 +354,21 @@ map.on('load', function () {
 		},
 		'districts-of-innovation-points'
 	);
+	map.addLayer(
+		{
+			'id': 'texas-school-districts-poly',
+			'type': 'fill',
+			'source': 'texas-school-districts',
+			'source-layer': 'texas_school_districts_v2',
+			'layout': {
+
+			},
+			'paint': {
+				'fill-color': 'rgba(200, 100, 240, 0)',
+				'fill-outline-color': 'rgba(200, 100, 240, 0)'
+			},
+		}
+	);
 
 	map.addSource('state-senate-districts', {
 		type: 'vector',
@@ -376,6 +391,21 @@ map.on('load', function () {
 			},
 		},
 		'districts-of-innovation-points'
+	);
+	map.addLayer(
+		{
+			'id': 'state-senate-districts-poly',
+			'type': 'fill',
+			'source': 'state-senate-districts',
+			'source-layer': 'state_senate_districts-0g2odu',
+			'layout': {
+
+			},
+			'paint': {
+				'fill-color': 'rgba(200, 100, 240, 0)',
+				'fill-outline-color': 'rgba(200, 100, 240, 0)'
+			},
+		}
 	);
 
 	map.addSource('school_house_senate_districts_UNION', {
@@ -422,8 +452,6 @@ map.on('load', function () {
 		},
 		'districts-of-innovation-points'
 	);
-
-
 	map.addLayer(
 		{
 			'id': 'state-house-districts-poly',
