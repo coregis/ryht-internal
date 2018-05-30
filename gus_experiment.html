@@ -239,14 +239,14 @@ var layers = map.getStyle().layers;
 
 
 
-function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
+function addPointLayer(map, gusID, sourceName, layerName, icon, legendid, visibleOnLoad) {
 	gus_api(gusID, function(jsondata) {
 		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
 			var visibilityState = 'none';
-			document.getElementById(icon).classList.add('inactive');
+			document.getElementById(legendid).classList.add('inactive');
 		}	else {
 			var visibilityState = 'visible';
-			document.getElementById(icon).classList.remove('inactive');
+			document.getElementById(legendid).classList.remove('inactive');
 		}
 		map.addSource(sourceName, {
 			type: 'geojson',
@@ -258,12 +258,13 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, visibleOnLoad) {
 			'source': sourceName,
 			layout: {
 				'icon-image': icon,
+				'icon-size':0.1,//initial size is small, so as we 'zoom' the icon it is returning towards native resolution
 				'icon-allow-overlap': true,
 				'visibility': visibilityState
 			}
 		});
 		map.on("zoomend", function(){
-			map.setLayoutProperty(layerName, 'icon-size', 1 + (map.getZoom() / originalZoomLevel - 1) * 10);
+			map.setLayoutProperty(layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5)*0.1);//the rightmost number in the parentheses should be the same as the 'icon-size' value in line 261; the 2.5 value is a best guess estimate to generate the zoom behavior we want
 		});
 	});
 }
@@ -279,7 +280,8 @@ map.on('load', function () {
 		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", // Google Sheets ID
 		'raising-family-partnerships', // this one will be the data source name
 		'raising-family-partnerships-points', // layer name
-		'raising_family_partnerships' // this one will be the icon image name
+		'raising_family_partnerships_large' ,// this one will be the icon image name, using the name from Mapbox
+		'raising_family_partnerships' // this one will be the id in the legend
 	);
 
 	addPointLayer(
@@ -287,6 +289,7 @@ map.on('load', function () {
 		"1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE",
 		'raising-blended-learners',
 		'raising-blended-learners-points',
+		'raising_blended_learners_large',
 		'raising_blended_learners'
 	);
 
@@ -295,6 +298,7 @@ map.on('load', function () {
 		"1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4",
 		'charles-butt-scholars',
 		'charles-butt-scholars-points',
+		'charles_butt_scholars_large',
 		'charles_butt_scholars',
 		true // set the optional final argument to true to have the layer visible on load
 	);
@@ -304,6 +308,7 @@ map.on('load', function () {
 		"1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs",
 		'raising-texas-teachers',
 		'raising-texas-teachers-points',
+		'raising_texas_teachers_large',
 		'raising_texas_teachers'
 	);
 
@@ -312,6 +317,7 @@ map.on('load', function () {
 		"1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0",
 		'raising-school-leaders',
 		'raising-school-leaders-points',
+		'raising_school_leaders_large',
 		'raising_school_leaders'
 	);
 
@@ -320,6 +326,7 @@ map.on('load', function () {
 		"1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g",
 		'districts-of-innovation',
 		'districts-of-innovation-points',
+		'districts_of_innovation_large',
 		'districts_of_innovation'
 	);
 
@@ -340,7 +347,7 @@ map.on('load', function () {
 			'line-cap': 'round'
         },
         'paint': {
-            'line-color': '#c29ed7',
+            'line-color': '#a1b082',
             'line-width': 1
         },
     }, 'districts-of-innovation-points');
@@ -360,8 +367,8 @@ map.on('load', function () {
 			'line-cap': 'round'
         },
         'paint': {
-            'line-color': 'rgba(99,108,153,0.5)',
-            'line-width': 2
+            'line-color': '#a1b082',
+            'line-width': 1
         },
 
     }, 'districts-of-innovation-points');
@@ -400,7 +407,7 @@ map.on('load', function () {
         },
         'paint': {
             'line-color': 'rgba(117,137,77,0.5)',
-            'line-width': 2
+            'line-width': 1
         },
 
     }, 'districts-of-innovation-points');
