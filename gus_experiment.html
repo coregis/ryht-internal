@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+
+
+
 <head>
     <meta charset='utf-8' />
     <title>Raise Your Hand Texas Internal Web Map</title>
@@ -54,7 +57,7 @@ function runWhenLoadComplete() {
 			for (i in polygonNames) {
 				select.options[select.options.length] = new Option(polygonNames[i], polygonNames[i]);
 			}
-			showHideLayer(sourceID+"-lines", sourceID.replace("-", "_").replace("-", "_"));
+//			showHideLayer(sourceID+"-lines", sourceID.replace("-", "_").replace("-", "_"));
 		}
 
 		function getIDsList(sourceID, fieldName) {
@@ -199,9 +202,9 @@ function closeNav() {
 				<!--
 				<li onClick="showHideLayer('districts-of-innovation-poly-lines', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly"></span>Districts of Innovation Poly</li>
 				-->
-				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts"></span>Texas School Districts</li>
-				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts"></span>State House Districts</li>
-				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts"></span>State Senate Districts</li>
+				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
+				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
+				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts" class="inactive"></span>State Senate Districts</li>
 			  </ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
@@ -376,7 +379,7 @@ map.on('load', function () {
 
 	//End Districts of Innovation as poly
 	*/
-	
+
 	map.addSource('texas-school-districts', {
 		type: 'vector',
 		url: 'mapbox://core-gis.e4af0de1'
@@ -388,7 +391,7 @@ map.on('load', function () {
 			'source': 'texas-school-districts',
 			'source-layer': 'texas_school_districts_v2',
 			'layout': {
-				'visibility': 'visible',
+				'visibility': 'none',
 				'line-join': 'round',
 				'line-cap': 'round'
 			},
@@ -426,7 +429,7 @@ map.on('load', function () {
 			'source': 'state-senate-districts',
 			'source-layer': 'state_senate_districts-0g2odu',
 			'layout': {
-				'visibility': 'visible',
+				'visibility': 'none',
 				'line-join': 'round',
 				'line-cap': 'round'
 			},
@@ -486,7 +489,7 @@ map.on('load', function () {
 			'source': 'state-house-districts',
 			'source-layer': 'state_house_districts-1vl4x8',
 			'layout': {
-				'visibility': 'visible',
+				'visibility': 'none',
 				'line-join': 'round',
 				'line-cap': 'round'
 			},
