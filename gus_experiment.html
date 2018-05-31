@@ -268,10 +268,14 @@
 		console.log(params);
 		if ((params.visibleOnLoad === undefined) || (params.visibleOnLoad === false)) {
 			var visibilityState = 'none';
-			document.getElementById(params.legendID).classList.add('inactive');
+			if ((params.legendID !== undefined) && (params.legendID !== false)) {
+				document.getElementById(params.legendID).classList.add('inactive');
+			}
 		}	else {
 			var visibilityState = 'visible';
-			document.getElementById(params.legendID).classList.remove('inactive');
+			if ((params.legendID !== undefined) && (params.legendID !== false)) {
+				document.getElementById(params.legendID).classList.remove('inactive');
+			}
 		}
 		map.addSource(params.sourceName, {
 			type: 'vector',
@@ -318,11 +322,12 @@
 	/*
 		How to add point layers using the GUS API:
 		Call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
+
+		How to add vector layers using Mapbox:
+		Call the addVectorLayer() function with arguments like the examples below.  Note that these calls have to be after the addPointLayer() ones, because they will reference at least one of the point layers as a way of making sure polygons get drawn behind points.
 	*/
 
 	map.on('load', function () {
-
-// params: gusID, sourceName, layerName, icon, iconSize, legendID, visibleOnLoad
 		addPointLayer(
 			map,
 			{
@@ -331,7 +336,7 @@
 				'layerName': 'raising-family-partnerships-points', // layer name
 				'icon': 'raising_family_partnerships_large', // this one will be the icon image name, using the name from Mapbox
 				'iconSize': 0.1, // a size multiplier for the icon, which should be saved at 1/x times the intended display size, so that when it gets scaled up on zooming in it will still look good
-				'legendID': 'raising_family_partnerships', // this one will be the id in the legend
+				'legendID': 'raising_family_partnerships', // OPTIONAL: the id in the legend, so we can set it to active or inactive as appropriate.  Simply leave out for layers that don't appear in the legend
 				'visibleOnLoad': false // set the optional final argument to true to have the layer visible on load
 			}
 		);
@@ -445,15 +450,15 @@
 		addVectorLayer(
 			map,
 			{
-				'sourceName': 'texas-school-districts',
-				'sourceID': 'texas_school_districts_v2',
-				'sourceURL': 'mapbox://core-gis.e4af0de1',
-				'lineLayerName': 'texas-school-districts-lines',
-				'lineColor': '#a1b082',
-				'legendID': 'texas_school_districts',
-				'displayBehind': 'districts-of-innovation-points',
-				'polygonLayerName': 'texas-school-districts-poly',
-				'visibleOnLoad': false
+				'sourceName': 'texas-school-districts', // data source name for internal use
+				'sourceID': 'texas_school_districts_v2', // name of the Mapbox layer from which the data will be loaded
+				'sourceURL': 'mapbox://core-gis.e4af0de1', // Mapbox URL
+				'lineLayerName': 'texas-school-districts-lines', // OPTIONAL name we'll use for the layer that shows the outlines.  Leave out or set to false if you don't want outlines displayed.
+				'lineColor': '#a1b082', // colour to draw those outlines with; safe to leave out if we're not drawing outlines, but must be explicitly set if we are
+				'legendID': 'texas_school_districts', // OPTIONAL: the id in the legend, so we can set it to active or inactive as appropriate.  Simply leave out for layers that don't appear in the legend
+				'displayBehind': 'districts-of-innovation-points', // ID of another existing layer, which Mapbox will make sure this one gets drawn behind
+				'polygonLayerName': 'texas-school-districts-poly', // OPTIONAL name we'll use for the layer that invisibly stores the polygon extents. Needed if we're either going to add this layer to either the zoom to districts control or set click events (e.g. popups) on it.  Leave out or set to false if you don't want one.
+				'visibleOnLoad': false // set this optional argument to true to have the layer visible on load.  Leave out or set to false to have it hidden on load
 			}
 		);
 
