@@ -197,10 +197,10 @@
 				<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars" class="inactive"></span>Charles Butt Scholars</li>
 				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers" class="inactive"></span>Raising Texas Teachers</li>
 				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders" class="inactive"></span>Raising School Leaders</li>
+<!--
 				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation" class="inactive"></span>Districts of Innovation</li>
-				<!--
-				<li onClick="showHideLayer('districts-of-innovation-poly-lines', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly"></span>Districts of Innovation Poly</li>
-				-->
+-->
+				<li onClick="showHideLayer('districts-of-innovation-poly-fill', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly" class="inactive"></span>Districts of Innovation</li>
 				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
 				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
 				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts" class="inactive"></span>State Senate Districts</li>
@@ -302,6 +302,9 @@
 					'type': 'fill',
 					'source': params.sourceName,
 					'source-layer': params.sourceID,
+					'layout': {
+						'visibility': visibilityState
+					},
 					'paint': {
 						'fill-color': params.polygonFillColor,
 						'fill-outline-color': params.polygonOutlineColor
@@ -383,7 +386,7 @@
 				'legendID': 'raising_school_leaders'
 			}
 		);
-
+/*
 		addPointLayer(
 			map,
 			{
@@ -395,52 +398,7 @@
 				'legendID': 'districts_of_innovation'
 			}
 		);
-
-
-		/*
-		//Attempting to add in the Districts of Innovation as polygons
-		map.addSource('districts-of-innovation-poly', {
-			type: 'vector',
-			url: 'mapbox://core-gis.97b01c24'
-		});
-		map.addLayer(
-			{
-				'id': 'districts-of-innovation-poly-lines',
-				'type': 'line',
-				'source': 'districts-of-innovation-poly',
-				'source-layer': 'districts_of_innovation_poly_v1',
-				'layout': {
-					'visibility': 'visible',
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					'line-color': '#f7f7c6',
-					'line-width': 1
-				},
-			},
-			'districts-of-innovation-points'
-		);
-		map.addLayer(
-			{
-				'id': 'districts-of-innovation-poly-fill',
-				'type': 'fill',
-				'source': 'districts-of-innovation-poly',
-				'source-layer': 'districts_of_innovation_poly_v1',
-				'layout': {
-
-
-				},
-				'paint': {
-					'fill-color': 'rgba(247, 247, 198, 100)',
-					'fill-outline-color': 'rgba(194, 194, 126, 100)'
-				},
-			}
-		);
-
-		//End Districts of Innovation as poly
-		*/
-
+*/
 
 		addVectorLayer(
 			map,
@@ -451,7 +409,7 @@
 				'lineLayerName': 'texas-school-districts-lines', // OPTIONAL name we'll use for the layer that shows the outlines.  Leave out or set to false if you don't want outlines displayed.
 				'lineColor': '#a1b082', // colour to draw those outlines with; safe to leave out if we're not drawing outlines, but must be explicitly set if we are
 				'legendID': 'texas_school_districts', // OPTIONAL: the id in the legend, so we can set it to active or inactive as appropriate.  Simply leave out for layers that don't appear in the legend
-				'displayBehind': 'districts-of-innovation-points', // ID of another existing layer, which Mapbox will make sure this one gets drawn behind
+				'displayBehind': 'raising-school-leaders-points', // ID of another existing layer, which Mapbox will make sure this one gets drawn behind
 				'polygonLayerName': 'texas-school-districts-poly', // OPTIONAL name we'll use for the layer that invisibly stores the polygon extents. Needed if we're either going to add this layer to either the zoom to districts control or set click events (e.g. popups) on it.  Leave out or set to false if you don't want one.
 				'polygonFillColor': 'rgba(200, 100, 240, 0)', // colour to fill polygons with. Needed if there's going to be a polygon layer; simply leave out if not.
 				'polygonOutlineColor': 'rgba(200, 100, 240, 0)', // colour to draw polygon boundaries with. Needed if there's going to be a polygon layer; simply leave out if not.
@@ -468,7 +426,7 @@
 				'lineLayerName': 'state-senate-districts-lines',
 				'lineColor': '#a1b082',
 				'legendID': 'state_senate_districts',
-				'displayBehind': 'districts-of-innovation-points',
+				'displayBehind': 'raising-school-leaders-points',
 				'polygonLayerName': 'state-senate-districts-poly',
 				'polygonFillColor': 'rgba(200, 100, 240, 0)',
 				'polygonOutlineColor': 'rgba(200, 100, 240, 0)'
@@ -484,10 +442,24 @@
 				'lineLayerName': 'state-house-districts-lines',
 				'lineColor': 'rgba(117, 137, 77, 0.5)',
 				'legendID': 'state_house_districts',
-				'displayBehind': 'districts-of-innovation-points',
+				'displayBehind': 'raising-school-leaders-points',
 				'polygonLayerName': 'state-house-districts-poly',
 				'polygonFillColor': 'rgba(200, 100, 240, 0)',
 				'polygonOutlineColor': 'rgba(200, 100, 240, 0)'
+			}
+		);
+
+		addVectorLayer(
+			map,
+			{
+				'sourceName': 'districts-of-innovation-poly',
+				'sourceID': 'districts_of_innovation_poly_v1',
+				'sourceURL': 'mapbox://core-gis.97b01c24',
+				'legendID': 'districts_of_innovation_poly',
+				'displayBehind': 'texas-school-districts-lines',
+				'polygonLayerName': 'districts-of-innovation-poly-fill',
+				'polygonFillColor': 'rgba(247, 247, 198, 100)',
+				'polygonOutlineColor': 'rgba(194, 194, 126, 100)'
 			}
 		);
 
