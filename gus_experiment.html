@@ -263,43 +263,47 @@
 		});
 	}
 
-	function addVectorLayer(map, sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendid, displayBehind, polygonLayerName, visibleOnLoad) {
-		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
+// map, sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendid, displayBehind, polygonLayerName, visibleOnLoad
+	function addVectorLayer(params) {
+		console.log(params);
+		if ((params.visibleOnLoad === undefined) || (params.visibleOnLoad === false)) {
 			var visibilityState = 'none';
-			document.getElementById(legendid).classList.add('inactive');
+			document.getElementById(params.legendid).classList.add('inactive');
 		}	else {
 			var visibilityState = 'visible';
-			document.getElementById(legendid).classList.remove('inactive');
+			document.getElementById(params.legendid).classList.remove('inactive');
 		}
-		map.addSource(sourceName, {
+		map.addSource(params.sourceName, {
 			type: 'vector',
-			url: sourceURL
+			url: params.sourceURL
 		});
-		if ((lineLayerName !== undefined) && (lineLayerName !== false)) {
-			map.addLayer({
-				'id': lineLayerName,
-				'type': 'line',
-				'source': sourceName,
-				'source-layer': sourceID,
-				'layout': {
-					'visibility': visibilityState,
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					'line-color': lineColor,
-					'line-width': 1
-				},
-				displayBehind
-			});
-		}
-		if ((polygonLayerName !== undefined) && (polygonLayerName !== false)) {
+		if ((params.lineLayerName !== undefined) && (params.lineLayerName !== false)) {
 			map.addLayer(
 				{
-					'id': polygonLayerName,
+					'id': params.lineLayerName,
+					'type': 'line',
+					'source': params.sourceName,
+					'source-layer': params.sourceID,
+					'layout': {
+						'visibility': visibilityState,
+						'line-join': 'round',
+						'line-cap': 'round'
+					},
+					'paint': {
+						'line-color': params.lineColor,
+						'line-width': 1
+					},
+				},
+				params.displayBehind
+			);
+		}
+		if ((params.polygonLayerName !== undefined) && (params.polygonLayerName !== false)) {
+			map.addLayer(
+				{
+					'id': params.polygonLayerName,
 					'type': 'fill',
-					'source': sourceName,
-					'source-layer': sourceID,
+					'source': params.sourceName,
+					'source-layer': params.sourceID,
 					'paint': {
 						'fill-color': 'rgba(200, 100, 240, 0)',
 						'fill-outline-color': 'rgba(200, 100, 240, 0)'
@@ -421,19 +425,20 @@
 
 		//End Districts of Innovation as poly
 		*/
-// map, sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendid, displayBehind, polygonLayerName, visibleOnLoad
-		addVectorLayer(
-			map,
-			'texas-school-districts',
-			'texas_school_districts_v2',
-			'mapbox://core-gis.e4af0de1',
-			'texas-school-districts-lines',
-			'#a1b082',
-			'texas_school_districts',
-			'districts-of-innovation-points',
-			'texas-school-districts-poly',
-			false
-		);
+
+
+		addVectorLayer({
+			'map': map,
+			'sourceName': 'texas-school-districts',
+			'sourceID': 'texas_school_districts_v2',
+			'sourceURL': 'mapbox://core-gis.e4af0de1',
+			'lineLayerName': 'texas-school-districts-lines',
+			'lineColor': '#a1b082',
+			'legendid': 'texas_school_districts',
+			'displayBehind': 'districts-of-innovation-points',
+			'polygonLayerName': 'texas-school-districts-poly',
+			'visibleOnLoad': false
+		});
 
 
 		map.addSource('state-senate-districts', {
