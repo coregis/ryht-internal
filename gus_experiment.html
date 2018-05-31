@@ -196,6 +196,9 @@ function closeNav() {
 				<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers" class="inactive"></span>Raising Texas Teachers</li>
 				<li onClick="showHideLayer('raising-school-leaders-points', markerName='raising_school_leaders');"><span id="raising_school_leaders" class="inactive"></span>Raising School Leaders</li>
 				<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation" class="inactive"></span>Districts of Innovation</li>
+				<!--
+				<li onClick="showHideLayer('districts-of-innovation-poly-lines', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly"></span>Districts of Innovation Poly</li>
+				-->
 				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts"></span>Texas School Districts</li>
 				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts"></span>State House Districts</li>
 				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts"></span>State Senate Districts</li>
@@ -258,7 +261,7 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, legendid, visibl
 			'source': sourceName,
 			layout: {
 				'icon-image': icon,
-				'icon-size':0.1,//initial size is small, so as we 'zoom' the icon it is returning towards native resolution
+				'icon-size':0.1,//initial size is small, so as we zoom the icon is returning towards native resolution
 				'icon-allow-overlap': true,
 				'visibility': visibilityState
 			}
@@ -330,8 +333,50 @@ map.on('load', function () {
 		'districts_of_innovation'
 	);
 
+	/*
+	//Attempting to add in the Districts of Innovation as polygons
+	map.addSource('districts-of-innovation-poly', {
+		type: 'vector',
+		url: 'mapbox://core-gis.97b01c24'
+	});
+	map.addLayer(
+		{
+			'id': 'districts-of-innovation-poly-lines',
+			'type': 'line',
+			'source': 'districts-of-innovation-poly',
+			'source-layer': 'districts_of_innovation_poly_v1',
+			'layout': {
+				'visibility': 'visible',
+				'line-join': 'round',
+				'line-cap': 'round'
+			},
+			'paint': {
+				'line-color': '#f7f7c6',
+				'line-width': 1
+			},
+		},
+		'districts-of-innovation-points'
+	);
+	map.addLayer(
+		{
+			'id': 'districts-of-innovation-poly-fill',
+			'type': 'fill',
+			'source': 'districts-of-innovation-poly',
+			'source-layer': 'districts_of_innovation_poly_v1',
+			'layout': {
 
 
+			},
+			'paint': {
+				'fill-color': 'rgba(247, 247, 198, 100)',
+				'fill-outline-color': 'rgba(194, 194, 126, 100)'
+			},
+		}
+	);
+
+	//End Districts of Innovation as poly
+	*/
+	
 	map.addSource('texas-school-districts', {
 		type: 'vector',
 		url: 'mapbox://core-gis.e4af0de1'
