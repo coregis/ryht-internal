@@ -212,307 +212,312 @@
 </div>
 
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWIHzbnOTebcQ';
+	mapboxgl.accessToken = 'pk.eyJ1IjoiY29yZS1naXMiLCJhIjoiaUxqQS1zQSJ9.mDT5nb8l_dWIHzbnOTebcQ';
 
-//set bounds to Texas
-var bounds = [
-		[-114.9594,21.637], // southwest coords
-		[-85.50,39.317] // northeast coords
-	];
+	//set bounds to Texas
+	var bounds = [
+			[-114.9594,21.637], // southwest coords
+			[-85.50,39.317] // northeast coords
+		];
 
-var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/core-gis/cjbcz8eyg70il2snv8ccgahf7', // stylesheet location; this is the style with markers turned OFF
-    center: [-98.887939,31.821565], // starting position [lng, lat]
-    zoom: 5.5, // starting zoom
-	maxBounds:  bounds // sets bounds as max
+	var map = new mapboxgl.Map({
+			container: 'map', // container id
+			style: 'mapbox://styles/core-gis/cjbcz8eyg70il2snv8ccgahf7', // stylesheet location; this is the style with markers turned OFF
+			center: [-98.887939,31.821565], // starting position [lng, lat]
+			zoom: 5.5, // starting zoom
+		maxBounds:  bounds // sets bounds as max
 
-});
-
-var originalZoomLevel = map.getZoom();
-
-
-
-function addPointLayer(map, gusID, sourceName, layerName, icon, iconSize, legendid, visibleOnLoad) {
-	gus_api(gusID, function(jsondata) {
-		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
-			var visibilityState = 'none';
-			document.getElementById(legendid).classList.add('inactive');
-		}	else {
-			var visibilityState = 'visible';
-			document.getElementById(legendid).classList.remove('inactive');
-		}
-		map.addSource(sourceName, {
-			type: 'geojson',
-			data: jsondata
-		});
-		map.addLayer({
-			'id': layerName,
-			'type': 'symbol',
-			'source': sourceName,
-			layout: {
-				'icon-image': icon,
-				'icon-size': iconSize,
-				'icon-allow-overlap': true,
-				'visibility': visibilityState
-			}
-		});
-		map.on("zoomend", function(){
-			map.setLayoutProperty(layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5) * iconSize);
-		});
 	});
-}
 
-/*
-	How to add point layers using the GUS API:
-	Call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
-*/
+	var originalZoomLevel = map.getZoom();
 
-map.on('load', function () {
-	addPointLayer(
-		map,
-		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", // Google Sheets ID
-		'raising-family-partnerships', // this one will be the data source name
-		'raising-family-partnerships-points', // layer name
-		'raising_family_partnerships_large', // this one will be the icon image name, using the name from Mapbox
-		0.1, // a size multiplier for the icon, which should be saved at 1/x times the intended display size, so that when it gets scaled up on zooming in it will still look good
-		'raising_family_partnerships' // this one will be the id in the legend
-	);
 
-	addPointLayer(
-		map,
-		"1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE",
-		'raising-blended-learners',
-		'raising-blended-learners-points',
-		'raising_blended_learners_large',
-		0.1,
-		'raising_blended_learners'
-	);
 
-	addPointLayer(
-		map,
-		"1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4",
-		'charles-butt-scholars',
-		'charles-butt-scholars-points',
-		'charles_butt_scholars_large',
-		0.1,
-		'charles_butt_scholars',
-		true // set the optional final argument to true to have the layer visible on load
-	);
+	function addPointLayer(map, gusID, sourceName, layerName, icon, iconSize, legendid, visibleOnLoad) {
+		gus_api(gusID, function(jsondata) {
+			if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
+				var visibilityState = 'none';
+				document.getElementById(legendid).classList.add('inactive');
+			}	else {
+				var visibilityState = 'visible';
+				document.getElementById(legendid).classList.remove('inactive');
+			}
+			map.addSource(sourceName, {
+				type: 'geojson',
+				data: jsondata
+			});
+			map.addLayer({
+				'id': layerName,
+				'type': 'symbol',
+				'source': sourceName,
+				layout: {
+					'icon-image': icon,
+					'icon-size': iconSize,
+					'icon-allow-overlap': true,
+					'visibility': visibilityState
+				}
+			});
+			map.on("zoomend", function(){
+				map.setLayoutProperty(layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5) * iconSize);
+			});
+		});
+	}
 
-	addPointLayer(
-		map,
-		"1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs",
-		'raising-texas-teachers',
-		'raising-texas-teachers-points',
-		'raising_texas_teachers_large',
-		0.1,
-		'raising_texas_teachers'
-	);
 
-	addPointLayer(
-		map,
-		"1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0",
-		'raising-school-leaders',
-		'raising-school-leaders-points',
-		'raising_school_leaders_large',
-		0.1,
-		'raising_school_leaders'
-	);
-
-	addPointLayer(
-		map,
-		"1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g",
-		'districts-of-innovation',
-		'districts-of-innovation-points',
-		'districts_of_innovation_large',
-		0.1,
-		'districts_of_innovation'
-	);
 
 	/*
-	//Attempting to add in the Districts of Innovation as polygons
-	map.addSource('districts-of-innovation-poly', {
-		type: 'vector',
-		url: 'mapbox://core-gis.97b01c24'
-	});
-	map.addLayer(
-		{
-			'id': 'districts-of-innovation-poly-lines',
-			'type': 'line',
-			'source': 'districts-of-innovation-poly',
-			'source-layer': 'districts_of_innovation_poly_v1',
-			'layout': {
-				'visibility': 'visible',
-				'line-join': 'round',
-				'line-cap': 'round'
-			},
-			'paint': {
-				'line-color': '#f7f7c6',
-				'line-width': 1
-			},
-		},
-		'districts-of-innovation-points'
-	);
-	map.addLayer(
-		{
-			'id': 'districts-of-innovation-poly-fill',
-			'type': 'fill',
-			'source': 'districts-of-innovation-poly',
-			'source-layer': 'districts_of_innovation_poly_v1',
-			'layout': {
-
-
-			},
-			'paint': {
-				'fill-color': 'rgba(247, 247, 198, 100)',
-				'fill-outline-color': 'rgba(194, 194, 126, 100)'
-			},
-		}
-	);
-
-	//End Districts of Innovation as poly
+		How to add point layers using the GUS API:
+		Call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
 	*/
 
-	map.addSource('texas-school-districts', {
-		type: 'vector',
-		url: 'mapbox://core-gis.e4af0de1'
+	map.on('load', function () {
+		addPointLayer(
+			map,
+			"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", // Google Sheets ID
+			'raising-family-partnerships', // this one will be the data source name
+			'raising-family-partnerships-points', // layer name
+			'raising_family_partnerships_large', // this one will be the icon image name, using the name from Mapbox
+			0.1, // a size multiplier for the icon, which should be saved at 1/x times the intended display size, so that when it gets scaled up on zooming in it will still look good
+			'raising_family_partnerships' // this one will be the id in the legend
+		);
+
+		addPointLayer(
+			map,
+			"1zzDxER2Ef2qMmUg4Ff4zWXoPMQh1RpK4TAueCWqQixE",
+			'raising-blended-learners',
+			'raising-blended-learners-points',
+			'raising_blended_learners_large',
+			0.1,
+			'raising_blended_learners'
+		);
+
+		addPointLayer(
+			map,
+			"1jlfzTbBwEZVMlkGSJLf9v50vBvHeTJKq13xLus7KbC4",
+			'charles-butt-scholars',
+			'charles-butt-scholars-points',
+			'charles_butt_scholars_large',
+			0.1,
+			'charles_butt_scholars',
+			true // set the optional final argument to true to have the layer visible on load
+		);
+
+		addPointLayer(
+			map,
+			"1e24TCpzxcgbSY6CaqDUn4Ll_F36Ttc9341EXEyhpsVs",
+			'raising-texas-teachers',
+			'raising-texas-teachers-points',
+			'raising_texas_teachers_large',
+			0.1,
+			'raising_texas_teachers'
+		);
+
+		addPointLayer(
+			map,
+			"1MLMUvg5WXSf3CytsEzEdVPsYPYUb_2nSXsnRnD_7Lj0",
+			'raising-school-leaders',
+			'raising-school-leaders-points',
+			'raising_school_leaders_large',
+			0.1,
+			'raising_school_leaders'
+		);
+
+		addPointLayer(
+			map,
+			"1F3qjOKXsK5GTfM_f8RdoQFCJiz6QWDNOQOthJOMQB2g",
+			'districts-of-innovation',
+			'districts-of-innovation-points',
+			'districts_of_innovation_large',
+			0.1,
+			'districts_of_innovation'
+		);
+
+		/*
+		//Attempting to add in the Districts of Innovation as polygons
+		map.addSource('districts-of-innovation-poly', {
+			type: 'vector',
+			url: 'mapbox://core-gis.97b01c24'
+		});
+		map.addLayer(
+			{
+				'id': 'districts-of-innovation-poly-lines',
+				'type': 'line',
+				'source': 'districts-of-innovation-poly',
+				'source-layer': 'districts_of_innovation_poly_v1',
+				'layout': {
+					'visibility': 'visible',
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': '#f7f7c6',
+					'line-width': 1
+				},
+			},
+			'districts-of-innovation-points'
+		);
+		map.addLayer(
+			{
+				'id': 'districts-of-innovation-poly-fill',
+				'type': 'fill',
+				'source': 'districts-of-innovation-poly',
+				'source-layer': 'districts_of_innovation_poly_v1',
+				'layout': {
+
+
+				},
+				'paint': {
+					'fill-color': 'rgba(247, 247, 198, 100)',
+					'fill-outline-color': 'rgba(194, 194, 126, 100)'
+				},
+			}
+		);
+
+		//End Districts of Innovation as poly
+		*/
+
+
+
+
+		map.addSource('texas-school-districts', {
+			type: 'vector',
+			url: 'mapbox://core-gis.e4af0de1'
+		});
+		map.addLayer(
+			{
+				'id': 'texas-school-districts-lines',
+				'type': 'line',
+				'source': 'texas-school-districts',
+				'source-layer': 'texas_school_districts_v2',
+				'layout': {
+					'visibility': 'none',
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': '#a1b082',
+					'line-width': 1
+				},
+			},
+			'districts-of-innovation-points'
+		);
+		map.addLayer(
+			{
+				'id': 'texas-school-districts-poly',
+				'type': 'fill',
+				'source': 'texas-school-districts',
+				'source-layer': 'texas_school_districts_v2',
+				'layout': {
+
+				},
+				'paint': {
+					'fill-color': 'rgba(200, 100, 240, 0)',
+					'fill-outline-color': 'rgba(200, 100, 240, 0)'
+				},
+			}
+		);
+
+		map.addSource('state-senate-districts', {
+			type: 'vector',
+			url: 'mapbox://core-gis.b2eu90mx'
+		});
+		map.addLayer(
+			{
+				'id': 'state-senate-districts-lines',
+				'type': 'line',
+				'source': 'state-senate-districts',
+				'source-layer': 'state_senate_districts-0g2odu',
+				'layout': {
+					'visibility': 'none',
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': '#a1b082',
+					'line-width': 1
+				},
+			},
+			'districts-of-innovation-points'
+		);
+		map.addLayer(
+			{
+				'id': 'state-senate-districts-poly',
+				'type': 'fill',
+				'source': 'state-senate-districts',
+				'source-layer': 'state_senate_districts-0g2odu',
+				'layout': {
+
+				},
+				'paint': {
+					'fill-color': 'rgba(200, 100, 240, 0)',
+					'fill-outline-color': 'rgba(200, 100, 240, 0)'
+				},
+			}
+		);
+
+		map.addSource('school_house_senate_districts_UNION', {
+			type: 'vector',
+			url: 'mapbox://core-gis.a81c8ecf'
+		});
+		map.addLayer(
+			{
+				'id': 'school_house_senate_districts_UNION-poly',
+				'type': 'fill',
+				'source': 'school_house_senate_districts_UNION',
+				'source-layer': 'school_house_senate_districts_UNION',
+				'layout': {
+
+				},
+				'paint': {
+					'fill-color': 'rgba(200, 100, 240, 0)',
+					'fill-outline-color': 'rgba(200, 100, 240, 0)'
+				},
+			},
+			'districts-of-innovation-points'
+		);
+
+
+		map.addSource('state-house-districts', {
+			type: 'vector',
+			url: 'mapbox://core-gis.9drnaiu0'
+		});
+		map.addLayer(
+			{
+				'id': 'state-house-districts-lines',
+				'type': 'line',
+				'source': 'state-house-districts',
+				'source-layer': 'state_house_districts-1vl4x8',
+				'layout': {
+					'visibility': 'none',
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': 'rgba(117,137,77,0.5)',
+					'line-width': 1
+				},
+			},
+			'districts-of-innovation-points'
+		);
+		map.addLayer(
+			{
+				'id': 'state-house-districts-poly',
+				'type': 'fill',
+				'source': 'state-house-districts',
+				'source-layer': 'state_house_districts-1vl4x8',
+				'layout': {
+
+				},
+				'paint': {
+					'fill-color': 'rgba(200, 100, 240, 0)',
+					'fill-outline-color': 'rgba(200, 100, 240, 0)'
+				},
+			}
+		);
+
+		runWhenLoadComplete();
+
 	});
-	map.addLayer(
-		{
-			'id': 'texas-school-districts-lines',
-			'type': 'line',
-			'source': 'texas-school-districts',
-			'source-layer': 'texas_school_districts_v2',
-			'layout': {
-				'visibility': 'none',
-				'line-join': 'round',
-				'line-cap': 'round'
-			},
-			'paint': {
-				'line-color': '#a1b082',
-				'line-width': 1
-			},
-		},
-		'districts-of-innovation-points'
-	);
-	map.addLayer(
-		{
-			'id': 'texas-school-districts-poly',
-			'type': 'fill',
-			'source': 'texas-school-districts',
-			'source-layer': 'texas_school_districts_v2',
-			'layout': {
-
-			},
-			'paint': {
-				'fill-color': 'rgba(200, 100, 240, 0)',
-				'fill-outline-color': 'rgba(200, 100, 240, 0)'
-			},
-		}
-	);
-
-	map.addSource('state-senate-districts', {
-		type: 'vector',
-		url: 'mapbox://core-gis.b2eu90mx'
-	});
-	map.addLayer(
-		{
-			'id': 'state-senate-districts-lines',
-			'type': 'line',
-			'source': 'state-senate-districts',
-			'source-layer': 'state_senate_districts-0g2odu',
-			'layout': {
-				'visibility': 'none',
-				'line-join': 'round',
-				'line-cap': 'round'
-			},
-			'paint': {
-				'line-color': '#a1b082',
-				'line-width': 1
-			},
-		},
-		'districts-of-innovation-points'
-	);
-	map.addLayer(
-		{
-			'id': 'state-senate-districts-poly',
-			'type': 'fill',
-			'source': 'state-senate-districts',
-			'source-layer': 'state_senate_districts-0g2odu',
-			'layout': {
-
-			},
-			'paint': {
-				'fill-color': 'rgba(200, 100, 240, 0)',
-				'fill-outline-color': 'rgba(200, 100, 240, 0)'
-			},
-		}
-	);
-
-	map.addSource('school_house_senate_districts_UNION', {
-		type: 'vector',
-		url: 'mapbox://core-gis.a81c8ecf'
-	});
-	map.addLayer(
-		{
-			'id': 'school_house_senate_districts_UNION-poly',
-			'type': 'fill',
-			'source': 'school_house_senate_districts_UNION',
-			'source-layer': 'school_house_senate_districts_UNION',
-			'layout': {
-
-			},
-			'paint': {
-				'fill-color': 'rgba(200, 100, 240, 0)',
-				'fill-outline-color': 'rgba(200, 100, 240, 0)'
-			},
-		},
-		'districts-of-innovation-points'
-	);
-
-
-	map.addSource('state-house-districts', {
-		type: 'vector',
-		url: 'mapbox://core-gis.9drnaiu0'
-	});
-	map.addLayer(
-		{
-			'id': 'state-house-districts-lines',
-			'type': 'line',
-			'source': 'state-house-districts',
-			'source-layer': 'state_house_districts-1vl4x8',
-			'layout': {
-				'visibility': 'none',
-				'line-join': 'round',
-				'line-cap': 'round'
-			},
-			'paint': {
-				'line-color': 'rgba(117,137,77,0.5)',
-				'line-width': 1
-			},
-		},
-		'districts-of-innovation-points'
-	);
-	map.addLayer(
-		{
-			'id': 'state-house-districts-poly',
-			'type': 'fill',
-			'source': 'state-house-districts',
-			'source-layer': 'state_house_districts-1vl4x8',
-			'layout': {
-
-			},
-			'paint': {
-				'fill-color': 'rgba(200, 100, 240, 0)',
-				'fill-outline-color': 'rgba(200, 100, 240, 0)'
-			},
-		}
-	);
-
-	runWhenLoadComplete();
-
-});
 
 // This is the popup for the merged boundary layers
 // When a click event occurs on a feature in the unioned districts layer, open a popup at the
