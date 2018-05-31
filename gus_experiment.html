@@ -233,7 +233,7 @@ var originalZoomLevel = map.getZoom();
 
 
 
-function addPointLayer(map, gusID, sourceName, layerName, icon, legendid, visibleOnLoad) {
+function addPointLayer(map, gusID, sourceName, layerName, icon, iconSize, legendid, visibleOnLoad) {
 	gus_api(gusID, function(jsondata) {
 		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
 			var visibilityState = 'none';
@@ -252,13 +252,13 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, legendid, visibl
 			'source': sourceName,
 			layout: {
 				'icon-image': icon,
-				'icon-size':0.1,//initial size is small, so as we zoom the icon is returning towards native resolution
+				'icon-size': iconSize,
 				'icon-allow-overlap': true,
 				'visibility': visibilityState
 			}
 		});
 		map.on("zoomend", function(){
-			map.setLayoutProperty(layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5)*0.1);//the rightmost number in the parentheses should be the same as the 'icon-size' value in line 261; the 2.5 value is a best guess estimate to generate the zoom behavior we want
+			map.setLayoutProperty(layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5) * iconSize);
 		});
 	});
 }
@@ -274,7 +274,8 @@ map.on('load', function () {
 		"1lW_TLQ25u20FtYMsJIrgWbGvMpdkIVfehZ2wsDa8eck", // Google Sheets ID
 		'raising-family-partnerships', // this one will be the data source name
 		'raising-family-partnerships-points', // layer name
-		'raising_family_partnerships_large' ,// this one will be the icon image name, using the name from Mapbox
+		'raising_family_partnerships_large', // this one will be the icon image name, using the name from Mapbox
+		0.1, // a size multiplier for the icon, which should be saved at 1/x times the intended display size, so that when it gets scaled up on zooming in it will still look good
 		'raising_family_partnerships' // this one will be the id in the legend
 	);
 
@@ -284,6 +285,7 @@ map.on('load', function () {
 		'raising-blended-learners',
 		'raising-blended-learners-points',
 		'raising_blended_learners_large',
+		0.1,
 		'raising_blended_learners'
 	);
 
@@ -293,6 +295,7 @@ map.on('load', function () {
 		'charles-butt-scholars',
 		'charles-butt-scholars-points',
 		'charles_butt_scholars_large',
+		0.1,
 		'charles_butt_scholars',
 		true // set the optional final argument to true to have the layer visible on load
 	);
@@ -303,6 +306,7 @@ map.on('load', function () {
 		'raising-texas-teachers',
 		'raising-texas-teachers-points',
 		'raising_texas_teachers_large',
+		0.1,
 		'raising_texas_teachers'
 	);
 
@@ -312,6 +316,7 @@ map.on('load', function () {
 		'raising-school-leaders',
 		'raising-school-leaders-points',
 		'raising_school_leaders_large',
+		0.1,
 		'raising_school_leaders'
 	);
 
@@ -321,6 +326,7 @@ map.on('load', function () {
 		'districts-of-innovation',
 		'districts-of-innovation-points',
 		'districts_of_innovation_large',
+		0.1,
 		'districts_of_innovation'
 	);
 
