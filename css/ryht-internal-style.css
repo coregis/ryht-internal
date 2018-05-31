@@ -47,7 +47,7 @@ img {
 	z-index : 1;
     left: 0;
 	bottom: 0;
-	font-family: "Helvetica Neue", helvetica, arial, sans-serif;	
+	font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 	font-weight: normal;
 	color: #363635;
 	text-decoration: none;
@@ -67,7 +67,7 @@ img {
 	z-index : 1;
     right: 0;
 	bottom: 0;
-	font-family: "Montserrat", helvetica, arial, sans-serif;	
+	font-family: "Montserrat", helvetica, arial, sans-serif;
 	font-weight: normal;
 	color: #363635;
 	text-decoration: none;
@@ -96,7 +96,7 @@ ul{
     margin-bottom: 5px;
     padding: 0;
     float: left;
-    list-style: none; 
+    list-style: none;
     }
   .legend .legend-scale ul li {
     font-size: 80%;
@@ -114,11 +114,11 @@ ul{
     margin-left: 0px;
     border: 0px solid #999;
     }
-	
+
 	.inactive {
 		opacity: 0.25;
 	}
-	
+
 #raising_blended_learners
 {
 	background:url(../markers/raising_blended_learners.svg) left center;
@@ -126,7 +126,7 @@ ul{
 	height:12px;
 	display: block;
 	float: left;
-}	
+}
 #raising_family_partnerships
 {
 	background:url(../markers/raising_family_partnerships.svg) left center;
@@ -142,7 +142,7 @@ ul{
 	height:14px;
 	display: block;
 	float: left;
-}	
+}
 #raising_texas_teachers
 {
 	background:url(../markers/raising_texas_teachers.svg) left center;
@@ -196,17 +196,17 @@ ul{
     color: #999;
     clear: both;
     }
-	
+
   .legend .map-credit {
     font-size: 70%;
     color: #999;
     clear: both;
     }
-	
+
   .legend a {
     color: #777;
     }
-	
+
 	a:link {
     text-decoration: none;
 }
