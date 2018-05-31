@@ -173,15 +173,15 @@
 </div>
 
 <script>
-function openNav() {
-    document.getElementById("mySidenav").style.width = "300px";
-    document.getElementById("main").style.marginLeft = "300px";
-}
+	function openNav() {
+		document.getElementById("mySidenav").style.width = "300px";
+		document.getElementById("main").style.marginLeft = "300px";
+	}
 
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
-}
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main").style.marginLeft= "0";
+	}
 </script>
 
 <!--END FLYOUT FOR 'ZOOM TO LAYERS'-->
@@ -264,8 +264,8 @@ function addPointLayer(map, gusID, sourceName, layerName, icon, iconSize, legend
 }
 
 /*
-	Updated method for adding point layers using the GUS API:
-	Simply call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
+	How to add point layers using the GUS API:
+	Call the addPointLayer() function with arguments like the examples below.  The final argument is optional: set it to true if you want the layer visible before the user does anything; otherwise it's hidden until they click to activate it.
 */
 
 map.on('load', function () {
@@ -517,22 +517,21 @@ map.on('load', function () {
 // This is the popup for the merged boundary layers
 // When a click event occurs on a feature in the unioned districts layer, open a popup at the
 // location of the click, with description HTML from its properties.
-    map.on('click', 'school_house_senate_districts_UNION-poly', function (e) {
-        new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML(fillpopup(e.features[0].properties))
-            .addTo(map);
-//		console.log(e.features[0].properties);
-    });
+	map.on('click', 'school_house_senate_districts_UNION-poly', function (e) {
+		new mapboxgl.Popup()
+			.setLngLat(e.lngLat)
+			.setHTML(fillpopup(e.features[0].properties))
+			.addTo(map);
+	});
 
 	 // Change the cursor to a pointer when the mouse is over the house districts layer.
     map.on('mouseenter', 'school_house_senate_districts_UNION-poly', function () {
-        map.getCanvas().style.cursor = 'pointer';
+			map.getCanvas().style.cursor = 'pointer';
     });
 
     // Change it back to a pointer when it leaves.
     map.on('mouseleave', 'school_house_senate_districts_UNION-poly', function () {
-        map.getCanvas().style.cursor = '';
+			map.getCanvas().style.cursor = '';
     });
 
 	function fillpopup(data){
@@ -553,17 +552,17 @@ map.on('load', function () {
 
 
 function fetchJSONFile(path, callback) {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState === 4) {
-            if (httpRequest.status === 200) {
-                var data = JSON.parse(httpRequest.responseText);
-                if (callback) callback(data);
-            }
-        }
-    };
-    httpRequest.open('GET', path);
-    httpRequest.send();
+	var httpRequest = new XMLHttpRequest();
+	httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === 4) {
+			if (httpRequest.status === 200) {
+				var data = JSON.parse(httpRequest.responseText);
+				if (callback) callback(data);
+			}
+		}
+	};
+	httpRequest.open('GET', path);
+	httpRequest.send();
 }
 
 function gus_api(id, callback) {
@@ -627,7 +626,6 @@ function gus_api(id, callback) {
       gj.features.push(feature);
     }
 
-//		console.log(JSON.stringify(gj));
     callback(gj);
   });
 };
