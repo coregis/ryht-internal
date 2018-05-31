@@ -458,39 +458,31 @@
 			}
 		);
 
-
-		map.addSource('state-senate-districts', {
-			type: 'vector',
-			url: 'mapbox://core-gis.b2eu90mx'
-		});
-		map.addLayer(
+		addVectorLayer(
+			map,
 			{
-				'id': 'state-senate-districts-lines',
-				'type': 'line',
-				'source': 'state-senate-districts',
-				'source-layer': 'state_senate_districts-0g2odu',
-				'layout': {
-					'visibility': 'none',
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					'line-color': '#a1b082',
-					'line-width': 1
-				},
-			},
-			'districts-of-innovation-points'
+				'sourceName': 'state-senate-districts',
+				'sourceID': 'state_senate_districts-0g2odu',
+				'sourceURL': 'mapbox://core-gis.b2eu90mx',
+				'lineLayerName': 'state-senate-districts-lines',
+				'lineColor': '#a1b082',
+				'legendID': 'state_senate_districts',
+				'displayBehind': 'districts-of-innovation-points',
+				'polygonLayerName': 'state-senate-districts-poly'
+			}
 		);
-		map.addLayer(
+
+		addVectorLayer(
+			map,
 			{
-				'id': 'state-senate-districts-poly',
-				'type': 'fill',
-				'source': 'state-senate-districts',
-				'source-layer': 'state_senate_districts-0g2odu',
-				'paint': {
-					'fill-color': 'rgba(200, 100, 240, 0)',
-					'fill-outline-color': 'rgba(200, 100, 240, 0)'
-				},
+				'sourceName': 'state-house-districts',
+				'sourceID': 'state_house_districts-1vl4x8',
+				'sourceURL': 'mapbox://core-gis.9drnaiu0',
+				'lineLayerName': 'state-house-districts-lines',
+				'lineColor': 'rgba(117, 137, 77, 0.5)',
+				'legendID': 'state_house_districts',
+				'displayBehind': 'districts-of-innovation-points',
+				'polygonLayerName': 'state-house-districts-poly'
 			}
 		);
 
@@ -511,43 +503,6 @@
 			},
 			'districts-of-innovation-points'
 		);
-
-
-		map.addSource('state-house-districts', {
-			type: 'vector',
-			url: 'mapbox://core-gis.9drnaiu0'
-		});
-		map.addLayer(
-			{
-				'id': 'state-house-districts-lines',
-				'type': 'line',
-				'source': 'state-house-districts',
-				'source-layer': 'state_house_districts-1vl4x8',
-				'layout': {
-					'visibility': 'none',
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					'line-color': 'rgba(117,137,77,0.5)',
-					'line-width': 1
-				},
-			},
-			'districts-of-innovation-points'
-		);
-		map.addLayer(
-			{
-				'id': 'state-house-districts-poly',
-				'type': 'fill',
-				'source': 'state-house-districts',
-				'source-layer': 'state_house_districts-1vl4x8',
-				'paint': {
-					'fill-color': 'rgba(200, 100, 240, 0)',
-					'fill-outline-color': 'rgba(200, 100, 240, 0)'
-				},
-			}
-		);
-
 		runWhenLoadComplete();
 
 	});
