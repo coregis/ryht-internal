@@ -231,17 +231,24 @@
 
 	var originalZoomLevel = map.getZoom();
 
+	function setVisibilityState(params) {
+		if ((params.visibleOnLoad === undefined) || (params.visibleOnLoad === false)) {
+			if ((params.legendID !== undefined) && (params.legendID !== false)) {
+				document.getElementById(params.legendID).classList.add('inactive');
+			}
+			return 'none';
+		}	else {
+			if ((params.legendID !== undefined) && (params.legendID !== false)) {
+				document.getElementById(params.legendID).classList.remove('inactive');
+			}
+			return 'visible'
+		}
+	}
 
 // params: gusID, sourceName, layerName, icon, iconSize, legendID, visibleOnLoad
 	function addPointLayer(map, params) {
 		gus_api(params.gusID, function(jsondata) {
-			if ((params.visibleOnLoad === undefined) || (params.visibleOnLoad === false)) {
-				var visibilityState = 'none';
-				document.getElementById(params.legendID).classList.add('inactive');
-			}	else {
-				var visibilityState = 'visible';
-				document.getElementById(params.legendID).classList.remove('inactive');
-			}
+			var visibilityState = setVisibilityState(params);
 			map.addSource(params.sourceName, {
 				type: 'geojson',
 				data: jsondata
@@ -265,18 +272,7 @@
 
 // params: sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendID, displayBehind, polygonLayerName, visibleOnLoad
 	function addVectorLayer(map, params) {
-		console.log(params);
-		if ((params.visibleOnLoad === undefined) || (params.visibleOnLoad === false)) {
-			var visibilityState = 'none';
-			if ((params.legendID !== undefined) && (params.legendID !== false)) {
-				document.getElementById(params.legendID).classList.add('inactive');
-			}
-		}	else {
-			var visibilityState = 'visible';
-			if ((params.legendID !== undefined) && (params.legendID !== false)) {
-				document.getElementById(params.legendID).classList.remove('inactive');
-			}
-		}
+		var visibilityState = setVisibilityState(params);
 		map.addSource(params.sourceName, {
 			type: 'vector',
 			url: params.sourceURL
