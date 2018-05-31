@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 
+<!--
+	WHERE THINGS ARE DEFINED IN THIS FILE:
+
+	Layers are added in the map.on('load') call towards the end.
+
+	For a layer to appear in the legend, it must have a corresponding <li> in <ul class='legend-labels'>, and the id for that item has to be given to addPointLayer() or addVectorLayer() as the legendID property.
+	For a legend item to show the right icon, there must be a corresponding rule set in css/ryht-internal-style.css
+
+	For a layer to appear in the Zoom to Districts control, it must have a polygon layer (even if that's kept invisible) and have two corresponding definitions:
+		1) a <select> element defined in the section of <div id="mySidenav"> that's labelled with the comment: !--Drop down controls--
+		2) a populateZoomControl() line in the runWhenLoadComplete() function
+-->
 
 <head>
     <meta charset='utf-8' />
