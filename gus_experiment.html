@@ -263,6 +263,52 @@
 		});
 	}
 
+	function addVectorLayer(map, sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendid, displayBehind, polygonLayerName, visibleOnLoad) {
+		if ((visibleOnLoad === undefined) || (visibleOnLoad === false)) {
+			var visibilityState = 'none';
+			document.getElementById(legendid).classList.add('inactive');
+		}	else {
+			var visibilityState = 'visible';
+			document.getElementById(legendid).classList.remove('inactive');
+		}
+		map.addSource(sourceName, {
+			type: 'vector',
+			url: sourceURL
+		});
+		if ((lineLayerName !== undefined) && (lineLayerName !== false)) {
+			map.addLayer({
+				'id': lineLayerName,
+				'type': 'line',
+				'source': sourceName,
+				'source-layer': sourceID,
+				'layout': {
+					'visibility': visibilityState,
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': lineColor,
+					'line-width': 1
+				},
+				displayBehind
+			});
+		}
+		if ((polygonLayerName !== undefined) && (polygonLayerName !== false)) {
+			map.addLayer(
+				{
+					'id': polygonLayerName,
+					'type': 'fill',
+					'source': sourceName,
+					'source-layer': sourceID,
+					'paint': {
+						'fill-color': 'rgba(200, 100, 240, 0)',
+						'fill-outline-color': 'rgba(200, 100, 240, 0)'
+					},
+				}
+			);
+		}
+	}
+
 
 
 	/*
@@ -375,44 +421,20 @@
 
 		//End Districts of Innovation as poly
 		*/
-
-
-
-
-		map.addSource('texas-school-districts', {
-			type: 'vector',
-			url: 'mapbox://core-gis.e4af0de1'
-		});
-		map.addLayer(
-			{
-				'id': 'texas-school-districts-lines',
-				'type': 'line',
-				'source': 'texas-school-districts',
-				'source-layer': 'texas_school_districts_v2',
-				'layout': {
-					'visibility': 'none',
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				'paint': {
-					'line-color': '#a1b082',
-					'line-width': 1
-				},
-			},
-			'districts-of-innovation-points'
+// map, sourceName, sourceID, sourceURL, lineLayerName, lineColor, legendid, displayBehind, polygonLayerName, visibleOnLoad
+		addVectorLayer(
+			map,
+			'texas-school-districts',
+			'texas_school_districts_v2',
+			'mapbox://core-gis.e4af0de1',
+			'texas-school-districts-lines',
+			'#a1b082',
+			'texas_school_districts',
+			'districts-of-innovation-points',
+			'texas-school-districts-poly',
+			false
 		);
-		map.addLayer(
-			{
-				'id': 'texas-school-districts-poly',
-				'type': 'fill',
-				'source': 'texas-school-districts',
-				'source-layer': 'texas_school_districts_v2',
-				'paint': {
-					'fill-color': 'rgba(200, 100, 240, 0)',
-					'fill-outline-color': 'rgba(200, 100, 240, 0)'
-				},
-			}
-		);
+
 
 		map.addSource('state-senate-districts', {
 			type: 'vector',
