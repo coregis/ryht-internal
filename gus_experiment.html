@@ -2,7 +2,6 @@
 <html>
 
 
-
 <head>
     <meta charset='utf-8' />
     <title>Raise Your Hand Texas Internal Web Map</title>
@@ -39,16 +38,16 @@
 //getIDsList() does the actual work of fetching the district names
 //zoomToPolygon() zooms the map to the district extent
 
-	function runWhenLoadComplete() {
-		if (!map.loaded()) {
-			setTimeout(runWhenLoadComplete, 100);
+		function runWhenLoadComplete() {
+			if (!map.loaded()) {
+				setTimeout(runWhenLoadComplete, 100);
+			}
+			else {
+				populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
+				populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
+				populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+			}
 		}
-		else {
-			populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
-			populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
-			populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
-		}
-	}
 
 		function populateZoomControl(selectID, sourceID, fieldName, layerName) {
 			polygonNames = getIDsList(sourceID, fieldName);
@@ -191,7 +190,7 @@
 <div class='legend'>
 	<div class='legend-title'>Click on a layer name below to toggle its visibility</div>
 		<div class='legend-scale'>
-			  <ul class='legend-labels'>
+			<ul class='legend-labels'>
 				<li onClick="showHideLayer('raising-blended-learners-points', markerName='raising_blended_learners');"><span id="raising_blended_learners" class="inactive"></span>Raising Blended Learners</li>
 				<li onClick="showHideLayer('raising-family-partnerships-points', markerName='raising_family_partnerships');"><span id="raising_family_partnerships" class="inactive"></span>Raising Family Partnerships</li>
 				<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars" class="inactive"></span>Charles Butt Scholars</li>
@@ -204,7 +203,7 @@
 				<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
 				<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
 				<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts" class="inactive"></span>State Senate Districts</li>
-			  </ul>
+			</ul>
 		</div>
 		<div class='legend-source'>Source: <a href="https://www.raiseyourhandtexas.org/"  target="_blank">Raise Your Hand Texas</a></div>
 		<div class='map-credit'>Map design by <a href="http://www.coregis.net/"  target="_blank">CORE GIS</a></div>
