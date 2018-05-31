@@ -486,23 +486,18 @@
 			}
 		);
 
-		map.addSource('school_house_senate_districts_UNION', {
-			type: 'vector',
-			url: 'mapbox://core-gis.a81c8ecf'
-		});
-		map.addLayer(
+		// This one's a special case: it's never displayed, but it's used to set what will appear in popups when someone clicks on the map
+		addVectorLayer(
+			map,
 			{
-				'id': 'school_house_senate_districts_UNION-poly',
-				'type': 'fill',
-				'source': 'school_house_senate_districts_UNION',
-				'source-layer': 'school_house_senate_districts_UNION',
-				'paint': {
-					'fill-color': 'rgba(200, 100, 240, 0)',
-					'fill-outline-color': 'rgba(200, 100, 240, 0)'
-				},
-			},
-			'districts-of-innovation-points'
+				'sourceName': 'school_house_senate_districts_UNION',
+				'sourceID': 'school_house_senate_districts_UNION',
+				'sourceURL': 'mapbox://core-gis.a81c8ecf',
+				'displayBehind': 'districts-of-innovation-points',
+				'polygonLayerName': 'school_house_senate_districts_UNION-poly'
+			}
 		);
+
 		runWhenLoadComplete();
 
 	});
