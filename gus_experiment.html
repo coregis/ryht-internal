@@ -18,19 +18,19 @@
 		font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 </style>
+
 	<script>
 		function showHideLayer(layerName, markerName) {
 			var visibility = map.getLayoutProperty(layerName, 'visibility');
-//			console.log(layerName, visibility);
         if (visibility === 'visible') {
-            map.setLayoutProperty(layerName, 'visibility', 'none');
-            this.className = '';
-			document.getElementById(markerName).classList.add('inactive');
+					map.setLayoutProperty(layerName, 'visibility', 'none');
+					this.className = '';
+				document.getElementById(markerName).classList.add('inactive');
         } else {
-            this.className = 'active';
-            map.setLayoutProperty(layerName, 'visibility', 'visible');
-			document.getElementById(markerName).classList.remove('inactive');
-        }
+					this.className = 'active';
+					map.setLayoutProperty(layerName, 'visibility', 'visible');
+				document.getElementById(markerName).classList.remove('inactive');
+			}
 		}
 
 //These are the four functions written by Eldan that power the zoom-to-district feature
@@ -39,16 +39,16 @@
 //getIDsList() does the actual work of fetching the district names
 //zoomToPolygon() zooms the map to the district extent
 
-function runWhenLoadComplete() {
-			if (!map.loaded()) {
-				setTimeout(runWhenLoadComplete, 100);
-			}
-			else {
-				populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
-				populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
-				populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
-			}
+	function runWhenLoadComplete() {
+		if (!map.loaded()) {
+			setTimeout(runWhenLoadComplete, 100);
 		}
+		else {
+			populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
+			populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
+			populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+		}
+	}
 
 		function populateZoomControl(selectID, sourceID, fieldName, layerName) {
 			polygonNames = getIDsList(sourceID, fieldName);
@@ -57,7 +57,6 @@ function runWhenLoadComplete() {
 			for (i in polygonNames) {
 				select.options[select.options.length] = new Option(polygonNames[i], polygonNames[i]);
 			}
-//			showHideLayer(sourceID+"-lines", sourceID.replace("-", "_").replace("-", "_"));
 		}
 
 		function getIDsList(sourceID, fieldName) {
@@ -231,17 +230,6 @@ var map = new mapboxgl.Map({
 });
 
 var originalZoomLevel = map.getZoom();
-/*
-var layers = map.getStyle().layers;
-    // Find the index of the first symbol layer in the map style
-    var firstSymbolId;
-    for (var i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol') {
-            firstSymbolId = layers[i].id;
-            break;
-        }
-    }
-*/
 
 
 
