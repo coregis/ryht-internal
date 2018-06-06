@@ -251,6 +251,7 @@
 			function addPointLayer(map, params) {
 				gus_api(params.gusID, function(jsondata) {
 					var visibilityState = setVisibilityState(params);
+					if (params.scalingFactor === undefined) { params.scalingFactor = 2.5; }
 					map.addSource(params.sourceName, {
 						type: 'geojson',
 						data: jsondata
@@ -267,7 +268,7 @@
 						}
 					});
 					map.on("zoomend", function(){
-						map.setLayoutProperty(params.layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * 2.5) * params.iconSize);
+						map.setLayoutProperty(params.layerName, 'icon-size', (1 + (map.getZoom() / originalZoomLevel - 1) * params.scalingFactor) * params.iconSize);
 					});
 				});
 			}
