@@ -203,7 +203,7 @@
 		<!--
 						<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation" class="inactive"></span>Districts of Innovation</li>
 		-->
-						<li onClick="showHideLayer('districts-of-innovation-poly-fill', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly" class="inactive"></span>Districts of Innovation</li>
+						<li onClick="showHideLayer('districts-of-innovation-poly-fill', markerName='districts_of_innovation_poly'); showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly" class="inactive"></span>Districts of Innovation</li>
 						<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
 						<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
 						<li onClick="showHideLayer('state-senate-districts-lines', markerName='state_senate_districts');"><span id="state_senate_districts" class="inactive"></span>State Senate Districts</li>
@@ -390,7 +390,7 @@
 						'legendID': 'raising_school_leaders'
 					}
 				);
-		/*
+
 				addPointLayer(
 					map,
 					{
@@ -399,10 +399,9 @@
 						'layerName': 'districts-of-innovation-points',
 						'icon': 'districts_of_innovation_large',
 						'iconSize': 0.1,
-						'legendID': 'districts_of_innovation'
+						'legendID': 'districts_of_innovation_poly'
 					}
 				);
-		*/
 
 				addVectorLayer(
 					map,
