@@ -58,6 +58,16 @@
 					populateZoomControl("school-districts-control", "texas-school-districts", "NAME", "Texas School Districts");
 					populateZoomControl("house-districts-control", "state-house-districts", "District", "State House Districts");
 					populateZoomControl("senate-districts-control", "state-senate-districts", "District", "State Senate Districts");
+					// using a timeout here to stop this from running before the big Raising School Leaders layer has finished loading
+					setTimeout(function(){
+						map.moveLayer('raising-blended-learners-points', 'raising-family-partnerships-points');
+						map.moveLayer('charles-butt-scholars-points', 'raising-family-partnerships-points');
+						map.moveLayer('raising-school-leaders-points', 'raising-family-partnerships-points');
+						map.moveLayer('charles-butt-scholars-points', 'raising-texas-teachers-points');
+						map.moveLayer('raising-blended-learners-points', 'raising-texas-teachers-points');
+						map.moveLayer('raising-school-leaders-points', 'raising-blended-learners-points');
+						map.moveLayer('raising-school-leaders-points', 'charles-butt-scholars-points');
+					}, 2000);
 				}
 			}
 
