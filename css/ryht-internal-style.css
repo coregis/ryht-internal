@@ -127,6 +127,14 @@ ul{
 	display: block;
 	float: left;
 }
+#raising_blended_learners_campuses
+{
+	background:url(../markers/raising_blended_learners_campuses.svg) left center;
+	width:14px;
+	height:12px;
+	display: block;
+	float: left;
+}
 #raising_family_partnerships
 {
 	background:url(../markers/raising_family_partnerships.svg) left center;
@@ -164,6 +172,14 @@ ul{
 	background:url(../markers/districts_of_innovation.svg) left center;
 	width:14px;
 	height:14px;
+	display: block;
+	float: left;
+}
+#raising_blended_learners_districts_poly
+{
+	background:url(../markers/raising_blended_learners_districts_poly.svg) left center;
+	width:11px;
+	height:16px;
 	display: block;
 	float: left;
 }
