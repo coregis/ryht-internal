@@ -206,7 +206,7 @@
 				<div class='legend-scale'>
 					<ul class='legend-labels'>
 						<li onClick="showHideLayer('raising-blended-learners-points', markerName='raising_blended_learners');"><span id="raising_blended_learners" class="inactive"></span>Raising Blended Learners Semi-Finalists</li>
-						<li onClick="showHideLayer('raising-blended-learners-campuses-points', markerName='raising_blended_learners_campuses');"><span id="raising_blended_learners_campuses" class="inactive"></span>Raising Blended Learners Campuses</li>		
+						<li onClick="showHideLayer('raising-blended-learners-campuses-points', markerName='raising_blended_learners_campuses');"><span id="raising_blended_learners_campuses" class="inactive"></span>Raising Blended Learners Campuses</li>
 						<li onClick="showHideLayer('raising-family-partnerships-points', markerName='raising_family_partnerships');"><span id="raising_family_partnerships" class="inactive"></span>Raising Family Partnerships</li>
 						<li onClick="showHideLayer('charles-butt-scholars-points', markerName='charles_butt_scholars');"><span id="charles_butt_scholars" class="inactive"></span>Charles Butt Scholars</li>
 						<li onClick="showHideLayer('raising-texas-teachers-points', markerName='raising_texas_teachers');"><span id="raising_texas_teachers" class="inactive"></span>Raising Texas Teachers</li>
@@ -214,7 +214,7 @@
 		<!--
 						<li onClick="showHideLayer('districts-of-innovation-points', markerName='districts_of_innovation');"><span id="districts_of_innovation" class="inactive"></span>Districts of Innovation</li>
 		-->
-						<li onClick="showHideLayer('raising-blended-learners-districts-poly-fill', markerName='raising_blended_learners_districts_poly');"><span id="raising_blended_learners_districts_poly" class="inactive"></span>Raising Blended Learners Districts</li>		
+						<li onClick="showHideLayer('raising-blended-learners-districts-poly-fill', markerName='raising_blended_learners_districts_poly');"><span id="raising_blended_learners_districts_poly" class="inactive"></span>Raising Blended Learners Districts</li>
 						<li onClick="showHideLayer('districts-of-innovation-poly-fill', markerName='districts_of_innovation_poly');"><span id="districts_of_innovation_poly" class="inactive"></span>Districts of Innovation</li>
 						<li onClick="showHideLayer('texas-school-districts-lines', markerName='texas_school_districts');"><span id="texas_school_districts" class="inactive"></span>Texas School Districts</li>
 						<li onClick="showHideLayer('state-house-districts-lines', markerName='state_house_districts');"><span id="state_house_districts" class="inactive"></span>State House Districts</li>
@@ -496,7 +496,7 @@
 						'polygonOutlineColor': 'rgba(194, 194, 126, 100)'
 					}
 				);
-				
+
 				addVectorLayer(
 					map,
 					{
@@ -509,7 +509,7 @@
 						'polygonFillColor': 'rgba(158, 215, 194, 100)',
 						'polygonOutlineColor': 'rgba(68, 137, 112, 100)'
 					}
-				);				
+				);
 
 				// This one's a special case: it's never displayed, but it's used to set what will appear in popups when someone clicks on the map
 				addVectorLayer(
@@ -614,24 +614,18 @@
 						};
 
 						for (let p in entries[e]) {
-							switch(p) {
+							switch(p.toLowerCase()) {
 								case 'longitude':
-								case 'LONGITUDE':
 								case 'long':
-								case 'LONG':
 								case 'lng':
-								case 'LNG':
 								case 'lon':
-								case 'LON':
 								case 'x':
-								case 'X':
+								case 'xcoord':
 									feature.geometry.coordinates[0] = parseFloat(entries[e][p]);
 								case 'latitude':
-								case 'LATITUDE':
 								case 'lat':
-								case 'LAT':
 								case 'y':
-								case 'Y':
+								case 'ycoord':
 									feature.geometry.coordinates[1] = parseFloat(entries[e][p]);
 							}
 						}
